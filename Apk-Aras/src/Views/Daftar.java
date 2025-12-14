@@ -8,65 +8,64 @@ import Connections.connect;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author USER
  */
-public class Login extends javax.swing.JFrame {
+public class Daftar extends javax.swing.JFrame {
 
     private Connection conn = new connect().connect();
+    private Statement st;
+    private ResultSet rslogin;
+    private String sql = "";
 
     /**
-     * Creates new form Login
+     * Creates new form Register
      */
-    public Login() {
+    public Daftar() {
         initComponents();
         this.setLocationRelativeTo(null);
-
     }
 
-    void prosesLogin() {
-        String user = lg_username.getText().trim();
-        String pass = new String(lg_password.getPassword()).trim();
+    void prosesDaftar() {
+        String user = rg_username.getText().trim();
+        String pass = new String(rg_password.getPassword()).trim();
 
-        // Validasi input
-        if (user.isEmpty() && pass.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Masukkan username dan password!");
-            lg_username.requestFocus();
-        } else if (user.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Masukkan username!");
-            lg_username.requestFocus();
-        } else if (pass.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Masukkan password!");
-            lg_password.requestFocus();
-        } else {
-            try {
-                String sql = "SELECT username FROM user WHERE username = ? AND password = MD5(?)";
+        if (user.isEmpty() || pass.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Lengkapi semua data terlebih dahulu!");
+            return;
+        }
+
+        try {
+
+            String cekSql = "SELECT * FROM user WHERE username = '" + user + "'";
+            st = conn.createStatement();
+            ResultSet rs = st.executeQuery(cekSql);
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Username sudah terdaftar, silakan gunakan username lain.");
+            } else {
+                String sql = "INSERT INTO user (username, password) VALUES (?, MD5(?))";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, user);
                 ps.setString(2, pass);
-                ResultSet rs = ps.executeQuery();
+                ps.executeUpdate();
 
-                if (rs.next()) {
-                    JOptionPane.showMessageDialog(this, "Login Berhasil!\nSelamat Datang " + rs.getString("username"));
-                    new Menu().setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "Username atau Password salah!");
-                    resetForm();
-                    lg_username.requestFocus();
-                }
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Terjadi kesalahan: " + e.getMessage());
+                JOptionPane.showMessageDialog(this, "Registrasi berhasil! Silakan login.");
+                resetForm();
             }
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal mendaftar: " + e.getMessage());
         }
     }
 
     public void resetForm() {
-        lg_username.setText("");
-        lg_password.setText("");
+        rg_username.setText("");
+        rg_password.setText("");
     }
 
     /**
@@ -81,11 +80,11 @@ public class Login extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        lg_username = new javax.swing.JTextField();
+        rg_username = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        lg_password = new javax.swing.JPasswordField();
-        lg_masuk = new javax.swing.JButton();
+        rg_password = new javax.swing.JPasswordField();
         lg_daftar = new javax.swing.JButton();
+        lg_kembali = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
 
@@ -97,16 +96,16 @@ public class Login extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Masuk");
+        jLabel1.setText("Daftar");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Username");
 
-        lg_username.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        lg_username.addActionListener(new java.awt.event.ActionListener() {
+        rg_username.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        rg_username.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lg_usernameActionPerformed(evt);
+                rg_usernameActionPerformed(evt);
             }
         });
 
@@ -114,21 +113,21 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Password");
 
-        lg_password.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-
-        lg_masuk.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        lg_masuk.setText("Masuk");
-        lg_masuk.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lg_masukActionPerformed(evt);
-            }
-        });
+        rg_password.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         lg_daftar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lg_daftar.setText("Daftar");
         lg_daftar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lg_daftarActionPerformed(evt);
+            }
+        });
+
+        lg_kembali.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        lg_kembali.setText("Kembali");
+        lg_kembali.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                lg_kembaliActionPerformed(evt);
             }
         });
 
@@ -147,15 +146,15 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 311, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lg_password)
-                        .addComponent(lg_username)
+                        .addComponent(rg_password)
+                        .addComponent(rg_username)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(jLabel3)
                                 .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(lg_masuk, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lg_daftar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                    .addComponent(lg_daftar, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                    .addComponent(lg_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGap(0, 0, Short.MAX_VALUE))))
                 .addGap(70, 70, 70))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -175,15 +174,15 @@ public class Login extends javax.swing.JFrame {
                 .addGap(59, 59, 59)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lg_username, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rg_username, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lg_password, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(rg_password, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lg_masuk)
-                    .addComponent(lg_daftar))
+                    .addComponent(lg_daftar)
+                    .addComponent(lg_kembali))
                 .addGap(87, 87, 87))
         );
 
@@ -207,20 +206,22 @@ public class Login extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void lg_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lg_usernameActionPerformed
+    private void rg_usernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rg_usernameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_lg_usernameActionPerformed
-
-    private void lg_masukActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lg_masukActionPerformed
-        // TODO add your handling code here:
-        prosesLogin();
-    }//GEN-LAST:event_lg_masukActionPerformed
+    }//GEN-LAST:event_rg_usernameActionPerformed
 
     private void lg_daftarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lg_daftarActionPerformed
         // TODO add your handling code here:
-        new Daftar().setVisible(true);
+        prosesDaftar();
+        new Login().setVisible(true);
         dispose();
     }//GEN-LAST:event_lg_daftarActionPerformed
+
+    private void lg_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lg_kembaliActionPerformed
+        // TODO add your handling code here:
+        new Login().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lg_kembaliActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,20 +240,21 @@ public class Login extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Daftar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Daftar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Daftar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Daftar.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Login().setVisible(true);
+                new Daftar().setVisible(true);
             }
         });
     }
@@ -265,8 +267,8 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton lg_daftar;
-    private javax.swing.JButton lg_masuk;
-    private javax.swing.JPasswordField lg_password;
-    private javax.swing.JTextField lg_username;
+    private javax.swing.JButton lg_kembali;
+    private javax.swing.JPasswordField rg_password;
+    private javax.swing.JTextField rg_username;
     // End of variables declaration//GEN-END:variables
 }

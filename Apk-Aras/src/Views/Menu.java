@@ -45,7 +45,7 @@ public class Menu extends javax.swing.JFrame {
         Data.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
         datasiswa.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        datasiswa.setText("Data Siswa");
+        datasiswa.setText("Data Alternatif");
         datasiswa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 datasiswaActionPerformed(evt);
@@ -102,7 +102,7 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void datasiswaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datasiswaActionPerformed
-        new DataSiswa().setVisible(true);
+        new DataAlternatif().setVisible(true);
         dispose();
     }//GEN-LAST:event_datasiswaActionPerformed
 
@@ -141,7 +141,7 @@ public class Menu extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Menu().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }

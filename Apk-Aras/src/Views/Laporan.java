@@ -109,7 +109,7 @@ public class Laporan extends javax.swing.JFrame {
 
         lp_datasiswa.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lp_datasiswa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/docs_120dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
-        lp_datasiswa.setText("Laporan Data Siswa");
+        lp_datasiswa.setText("Laporan Data Alternatif");
         lp_datasiswa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 lp_datasiswaActionPerformed(evt);
@@ -130,7 +130,7 @@ public class Laporan extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(166, Short.MAX_VALUE)
+                .addContainerGap(158, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
