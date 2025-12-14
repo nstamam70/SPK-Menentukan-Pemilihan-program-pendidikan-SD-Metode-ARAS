@@ -55,10 +55,20 @@ public class Menu extends javax.swing.JFrame {
 
         datakriteria.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         datakriteria.setText("Data Kriteria");
+        datakriteria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datakriteriaActionPerformed(evt);
+            }
+        });
         Data.add(datakriteria);
 
         datanilai.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         datanilai.setText("Data Nilai");
+        datanilai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                datanilaiActionPerformed(evt);
+            }
+        });
         Data.add(datanilai);
 
         jMenuBar1.add(Data);
@@ -110,6 +120,18 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         dispose();
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void datakriteriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datakriteriaActionPerformed
+        // TODO add your handling code here:
+        new DataKriteria().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_datakriteriaActionPerformed
+
+    private void datanilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datanilaiActionPerformed
+        // TODO add your handling code here:
+         new Nilai().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_datanilaiActionPerformed
 
     /**
      * @param args the command line arguments

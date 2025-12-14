@@ -65,13 +65,13 @@ public class Nilai extends javax.swing.JFrame {
     }
 
     protected void datatable() {
-        Object[] clcis = {"Kode", "Nama Siswa", "Nama Kriteria", "Nilai"};
+        Object[] clcis = {"Kode", "Nama Alternatif", "Nama Kriteria", "Nilai"};
         tabmode = new DefaultTableModel(null, clcis);
         tabmode.setRowCount(0);
         tablenilai.setModel(tabmode);
-        String sql = "SELECT n.kode, a.nama_siswa, k.nama_kriteria, n.nilai "
-                + "FROM nilai_siswa n "
-                + "JOIN alternatif a ON n.id_siswa = a.id_siswa "
+        String sql = "SELECT n.kode, a.nama_alternatif, k.nama_kriteria, n.nilai "
+                + "FROM nilai_alternatif n "
+                + "JOIN alternatif a ON n.id_alternatif = a.id_alternatif "
                 + "JOIN kriteria k ON n.id_kriteria = k.id_kriteria";
 
         try {
@@ -79,7 +79,7 @@ public class Nilai extends javax.swing.JFrame {
             ResultSet hasil = stat.executeQuery(sql);
             while (hasil.next()) {
                 String a = hasil.getString("kode");
-                String b = hasil.getString("nama_siswa");
+                String b = hasil.getString("nama_alternatif");
                 String c = hasil.getString("nama_kriteria");
                 String d = hasil.getString("nilai");
 
@@ -95,13 +95,13 @@ public class Nilai extends javax.swing.JFrame {
         public void loadAlternatifToComboBox(JComboBox comboBox) {
             comboBox.removeAllItems();
             try {
-                String sql = "SELECT id_siswa, nama_siswa FROM alternatif";
+                String sql = "SELECT id_alternatif, nama_alternatif FROM alternatif";
                 PreparedStatement pst = conn.prepareStatement(sql);
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    int idSiswa = rs.getInt("id_siswa");
-                    String namaSiswa = rs.getString("nama_siswa");
+                    int idSiswa = rs.getInt("id_alternatif");
+                    String namaSiswa = rs.getString("nama_alternatif");
 //                    comboBox.addItem(new itemSiswa(idSiswa, namaSiswa)); // ← langsung masukkan objek Item!
                 }
 
@@ -139,7 +139,7 @@ public class Nilai extends javax.swing.JFrame {
 
     private void autoKodeNilai() {
         try {
-            String sql = "SELECT MAX(kode) FROM nilai_siswa";
+            String sql = "SELECT MAX(kode) FROM nilai_alternatif";
             java.sql.Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
 
@@ -160,15 +160,15 @@ public class Nilai extends javax.swing.JFrame {
     }
 
     private void cariNilai(String keyword) {
-        Object[] clcis = {"Kode", "Nama Siswa", "Nama Kriteria", "Nilai"};
+        Object[] clcis = {"Kode", "Nama alternatif", "Nama Kriteria", "Nilai"};
         tabmode = new DefaultTableModel(null, clcis);
         tablenilai.setModel(tabmode);
 
-        String sql = "SELECT n.kode, a.nama_siswa, k.nama_kriteria, n.nilai "
+        String sql = "SELECT n.kode, a.nama_alternatif, k.nama_kriteria, n.nilai "
                 + "FROM nilai_siswa n "
-                + "JOIN alternatif a ON n.id_siswa = a.id_siswa "
+                + "JOIN alternatif a ON n.id_alternatif = a.id_siswa "
                 + "JOIN kriteria k ON n.id_kriteria = k.id_kriteria "
-                + "WHERE a.nama_siswa LIKE ?";
+                + "WHERE a.nama_alternatif LIKE ?";
 
         try {
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -177,7 +177,7 @@ public class Nilai extends javax.swing.JFrame {
 
             while (rs.next()) {
                 String a = rs.getString("kode");
-                String b = rs.getString("nama_siswa");
+                String b = rs.getString("nama_alternatif");
                 String c = rs.getString("nama_kriteria");
                 String d = rs.getString("nilai");
 
@@ -414,7 +414,7 @@ public class Nilai extends javax.swing.JFrame {
 //        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
         String nilai = dn_nilai.getText();
 
-        String sql = "INSERT INTO nilai_siswa (kode, id_siswa, id_kriteria, nilai) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO nilai_siswa (kode, id_alternatif, id_alternatif, nilai) VALUES (?,?,?,?)";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, kode);
@@ -439,7 +439,7 @@ public class Nilai extends javax.swing.JFrame {
 //        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
         String nilai = dn_nilai.getText();
 
-        String sql = "UPDATE nilai_siswa SET id_siswa=?, id_kriteria=?, nilai=? WHERE kode=?";
+        String sql = "UPDATE nilai_siswa SET id_alternatif=?, id_kriteria=?, nilai=? WHERE kode=?";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
 //            stat.setInt(1, siswa.getIdSiswa());
@@ -462,7 +462,7 @@ public class Nilai extends javax.swing.JFrame {
     private void dn_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dn_hapusActionPerformed
         int ok = JOptionPane.showConfirmDialog(null, "hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
         if (ok == 0) {
-            String sql = "delete from nilai_siswa where kode='" + dn_kode.getText() + "'";
+            String sql = "delete from nilai_alternatif where kode='" + dn_kode.getText() + "'";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
                 stat.executeUpdate();

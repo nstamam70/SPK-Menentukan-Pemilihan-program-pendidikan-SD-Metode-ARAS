@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -26,8 +27,8 @@ public class DataKriteria extends javax.swing.JFrame {
      */
     public DataKriteria() {
         initComponents();
-//        datatable();
-//        autoKodeKriteria();
+        datatable();
+        autoKodeKriteria();
         this.setLocationRelativeTo(null);
     }
 
@@ -35,33 +36,37 @@ public class DataKriteria extends javax.swing.JFrame {
         k_kode.setText("");
         k_nama.setText("");
         k_nilai.setText("");
+        k_tipe.setSelectedIndex(0);
     }
 
     private void active() {
         k_kode.setEnabled(true);
         k_nama.setEnabled(true);
         k_nilai.setEnabled(true);
+        k_tipe.setEnabled(true);
         k_kode.requestFocus();
     }
 
     protected void datatable() {
-        Object[] clcis = {"Kode", "Nama Kriteria", "Nilai"};
-        tabmode = new DefaultTableModel(null, clcis);
-        tablekriteria.setModel(tabmode);
-        tabmode.setRowCount(0);
-        String sql = "select * from kriteria";
-        try {
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while (hasil.next()) {
-                String a = hasil.getString("kode_kriteria");
-                String b = hasil.getString("nama_kriteria");
-                String c = hasil.getString("bobot_kriteria");
+        Object[] kolom = {"Kode", "Nama Kriteria", "Tipe", "Bobot"};
+        DefaultTableModel model = new DefaultTableModel(null, kolom);
+        tablekriteria.setModel(model);
 
-                String[] data = {a, b, c};
-                tabmode.addRow(data);
+        String sql = "SELECT kode_kriteria, nama_kriteria, tipe, bobot FROM kriteria";
+        try {
+            Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("kode_kriteria"),
+                    rs.getString("nama_kriteria"),
+                    rs.getString("tipe"),
+                    rs.getDouble("bobot")
+                });
             }
-        } catch (Exception e) {
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal load data: " + e.getMessage());
         }
     }
 
@@ -111,7 +116,7 @@ public class DataKriteria extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablekriteria = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
-        k_nama1 = new javax.swing.JTextField();
+        k_tipe = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -218,12 +223,7 @@ public class DataKriteria extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Tipe Kriteria");
 
-        k_nama1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        k_nama1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                k_nama1ActionPerformed(evt);
-            }
-        });
+        k_tipe.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Benefit", "Cost" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -238,31 +238,31 @@ public class DataKriteria extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel5)
-                                .addGap(100, 100, 100)
-                                .addComponent(k_nama1))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
                                 .addGap(87, 87, 87)
                                 .addComponent(k_nama))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(96, 96, 96)
-                                .addComponent(k_nilai))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addGap(205, 205, 205)
                                 .addComponent(k_simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(k_ubah, javax.swing.GroupLayout.PREFERRED_SIZE, 107, Short.MAX_VALUE)
+                                .addComponent(k_ubah, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(k_hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 107, Short.MAX_VALUE)
+                                .addComponent(k_hapus, javax.swing.GroupLayout.DEFAULT_SIZE, 115, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(k_kembali)
                                 .addGap(140, 140, 140))
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel2)
                                 .addGap(93, 93, 93)
-                                .addComponent(k_kode)))
+                                .addComponent(k_kode))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(jLabel5))
+                                .addGap(96, 96, 96)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(k_nilai)
+                                    .addComponent(k_tipe, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                         .addGap(211, 211, 211))))
         );
         jPanel2Layout.setVerticalGroup(
@@ -280,10 +280,13 @@ public class DataKriteria extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
                     .addComponent(k_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel5)
-                    .addComponent(k_nama1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addComponent(jLabel5))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addComponent(k_tipe, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(k_nilai, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -295,7 +298,7 @@ public class DataKriteria extends javax.swing.JFrame {
                     .addComponent(k_hapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(k_kembali, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 321, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 336, Short.MAX_VALUE)
                 .addGap(21, 21, 21))
         );
 
@@ -323,88 +326,79 @@ public class DataKriteria extends javax.swing.JFrame {
     }//GEN-LAST:event_k_kembaliActionPerformed
 
     private void tablekriteriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablekriteriaMouseClicked
-        int clc = tablekriteria.getSelectedRow();
-        String a = tabmode.getValueAt(clc, 0).toString();
-        String b = tabmode.getValueAt(clc, 1).toString();
-        String c = tabmode.getValueAt(clc, 2).toString();
-
-        k_kode.setText(a);
-        k_nama.setText(b);
-        k_nilai.setText(c);
-
-        k_simpan.setVisible(false);
+        int baris = tablekriteria.getSelectedRow();
+        k_kode.setText(tablekriteria.getValueAt(baris, 0).toString());
+        k_nama.setText(tablekriteria.getValueAt(baris, 1).toString());
+        k_tipe.setSelectedItem(tablekriteria.getValueAt(baris, 2).toString());
+        k_nilai.setText(tablekriteria.getValueAt(baris, 3).toString());
     }//GEN-LAST:event_tablekriteriaMouseClicked
 
     private void k_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_simpanActionPerformed
-        String kode = k_kode.getText();
-        String nama = k_nama.getText();
-        String nilai = k_nilai.getText();
-
-        String sql = "INSERT INTO kriteria (kode_kriteria,nama_kriteria,bobot_kriteria) VALUES (?,?,?)";
+        String sql = "INSERT INTO kriteria (kode_kriteria, nama_kriteria, tipe, bobot) VALUES (?,?,?,?)";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
-            stat.setString(1, kode);
-            stat.setString(2, nama);
-            stat.setString(3, nilai);
+            stat.setString(1, k_kode.getText());
+            stat.setString(2, k_nama.getText());
+            stat.setString(3, k_tipe.getSelectedItem().toString()); // JComboBox
+            stat.setDouble(4, Double.parseDouble(k_nilai.getText()));
 
             stat.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
+            JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
+
             clear();
-            k_kode.requestFocus();
             datatable();
             autoKodeKriteria();
+            k_kode.requestFocus();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data Gagal Disimpan " + e);
+            JOptionPane.showMessageDialog(this, "Data gagal disimpan: " + e.getMessage());
         }
     }//GEN-LAST:event_k_simpanActionPerformed
 
     private void k_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_ubahActionPerformed
+        String sql = "UPDATE kriteria SET nama_kriteria=?, tipe=?, bobot=? WHERE kode_kriteria=?";
         try {
-            String sql = "UPDATE kriteria SET kode_kriteria=?, nama_kriteria=?, bobot_kriteria=? WHERE kode_kriteria=?";
             PreparedStatement stat = conn.prepareStatement(sql);
-
-            stat.setString(1, k_kode.getText());
-            stat.setString(2, k_nama.getText());
-            stat.setString(3, k_nilai.getText());
+            stat.setString(1, k_nama.getText());
+            stat.setString(2, k_tipe.getSelectedItem().toString());
+            stat.setDouble(3, Double.parseDouble(k_nilai.getText()));
             stat.setString(4, k_kode.getText());
 
             stat.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
+            JOptionPane.showMessageDialog(this, "Data berhasil diubah");
 
             clear();
-            k_kode.requestFocus();
             datatable();
-            k_simpan.setVisible(true);
-
+            autoKodeKriteria();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Data gagal diubah: " + e.getMessage());
-        } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Terjadi kesalahan tidak terduga: " + e.getMessage());
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Data gagal diubah: " + e.getMessage());
         }
     }//GEN-LAST:event_k_ubahActionPerformed
 
     private void k_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_hapusActionPerformed
-        int ok = JOptionPane.showConfirmDialog(null, "hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
-        if (ok == 0) {
-            String sql = "delete from kriteria where kode_kriteria='" + k_kode.getText() + "'";
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus data ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM kriteria WHERE kode_kriteria=?";
             try {
                 PreparedStatement stat = conn.prepareStatement(sql);
+                stat.setString(1, k_kode.getText());
                 stat.executeUpdate();
-                JOptionPane.showMessageDialog(null, "data berhasi dihapus");;
+
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+
                 clear();
-                k_kode.requestFocus();
                 datatable();
+                autoKodeKriteria();
             } catch (SQLException e) {
-                JOptionPane.showMessageDialog(null, "Data gagal dihapus" + e);
+                JOptionPane.showMessageDialog(this, "Data gagal dihapus: " + e.getMessage());
             }
         }
     }//GEN-LAST:event_k_hapusActionPerformed
-
-    private void k_nama1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_nama1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_k_nama1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -456,9 +450,9 @@ public class DataKriteria extends javax.swing.JFrame {
     private javax.swing.JButton k_kembali;
     private javax.swing.JTextField k_kode;
     private javax.swing.JTextField k_nama;
-    private javax.swing.JTextField k_nama1;
     private javax.swing.JTextField k_nilai;
     private javax.swing.JButton k_simpan;
+    private javax.swing.JComboBox<String> k_tipe;
     private javax.swing.JButton k_ubah;
     private javax.swing.JTable tablekriteria;
     // End of variables declaration//GEN-END:variables

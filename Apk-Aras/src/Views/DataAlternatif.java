@@ -4,18 +4,107 @@
  */
 package Views;
 
+import Connections.connect;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author USER
  */
 public class DataAlternatif extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DataSiswa
-     */
+    private Connection conn = new connect().connect();
+    private DefaultTableModel tabmode;
+
     public DataAlternatif() {
         initComponents();
+        datatable();
+        autoKodeAlternatif();
+        ds_kode.setEditable(false);
         this.setLocationRelativeTo(null);
+        ds_cari.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
+                cariData(ds_cari.getText());
+            }
+
+            public void removeUpdate(javax.swing.event.DocumentEvent e) {
+                cariData(ds_cari.getText());
+            }
+
+            public void changedUpdate(javax.swing.event.DocumentEvent e) {
+                cariData(ds_cari.getText());
+            }
+        });
+    }
+
+    private void clear() {
+        ds_kode.setText("");
+        ds_nama.setText("");
+    }
+
+    private void active() {
+        ds_kode.setText("");
+        ds_nama.setEnabled(true);
+    }
+
+    protected void datatable() {
+        Object[] clcis = {"Kode Alternatif", "Nama Alternatif"};
+        tabmode = new DefaultTableModel(null, clcis);
+        tablealternatif.setModel(tabmode);
+        String sql = "SELECT kode_alternatif, nama_alternatif FROM alternatif";
+        try {
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while (hasil.next()) {
+                String a = hasil.getString("kode_alternatif");
+                String b = hasil.getString("nama_alternatif");
+                tabmode.addRow(new Object[]{a, b});
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Gagal load tabel: " + e.getMessage());
+        }
+    }
+
+    private void autoKodeAlternatif() {
+        try {
+            String sql = "SELECT MAX(kode_alternatif) FROM alternatif";
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
+            if (rs.next()) {
+                String kode = rs.getString(1);
+                if (kode == null) {
+                    ds_kode.setText("A001");
+                } else {
+                    int no = Integer.parseInt(kode.substring(1)) + 1;
+                    ds_kode.setText(String.format("A%03d", no));
+                }
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Gagal generate kode alternatif: " + e.getMessage());
+        }
+    }
+
+    private void cariData(String keyword) {
+        Object[] clcis = {"Kode Alternatif", "Nama Alternatif"};
+        tabmode = new DefaultTableModel(null, clcis);
+        tablealternatif.setModel(tabmode);
+        String sql = "SELECT kode_alternatif, nama_alternatif FROM alternatif WHERE nama_alternatif LIKE ?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, "%" + keyword + "%");
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                tabmode.addRow(new Object[]{rs.getString("kode_alternatif"), rs.getString("nama_alternatif")});
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Pencarian gagal: " + e.getMessage());
+        }
     }
 
     /**
@@ -33,10 +122,10 @@ public class DataAlternatif extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        ds_nisn = new javax.swing.JTextField();
+        ds_nama = new javax.swing.JTextField();
         ds_kode = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tablesiswa = new javax.swing.JTable();
+        tablealternatif = new javax.swing.JTable();
         ds_cari = new javax.swing.JTextField();
         ds_simpan = new javax.swing.JButton();
         ds_ubah = new javax.swing.JButton();
@@ -90,7 +179,7 @@ public class DataAlternatif extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Cari Nama");
 
-        ds_nisn.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        ds_nama.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
         ds_kode.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ds_kode.addActionListener(new java.awt.event.ActionListener() {
@@ -99,7 +188,7 @@ public class DataAlternatif extends javax.swing.JFrame {
             }
         });
 
-        tablesiswa.setModel(new javax.swing.table.DefaultTableModel(
+        tablealternatif.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -110,12 +199,12 @@ public class DataAlternatif extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tablesiswa.addMouseListener(new java.awt.event.MouseAdapter() {
+        tablealternatif.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tablesiswaMouseClicked(evt);
+                tablealternatifMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(tablesiswa);
+        jScrollPane1.setViewportView(tablealternatif);
 
         ds_cari.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         ds_cari.addActionListener(new java.awt.event.ActionListener() {
@@ -177,7 +266,7 @@ public class DataAlternatif extends javax.swing.JFrame {
                         .addComponent(ds_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(ds_kode, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
-                        .addComponent(ds_nisn)))
+                        .addComponent(ds_nama)))
                 .addGap(22, 22, 22))
             .addComponent(jScrollPane1)
             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -197,7 +286,7 @@ public class DataAlternatif extends javax.swing.JFrame {
                 .addGap(14, 14, 14)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel3)
-                    .addComponent(ds_nisn, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ds_nama, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ds_simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -224,113 +313,76 @@ public class DataAlternatif extends javax.swing.JFrame {
     }//GEN-LAST:event_ds_kembaliActionPerformed
 
     private void ds_hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_hapusActionPerformed
-        //        int ok = JOptionPane.showConfirmDialog(null, "hapus", "Konfirmasi Dialog", JOptionPane.YES_NO_CANCEL_OPTION);
-        //        if (ok == 0) {
-            //            String sql = "delete from alternatif where kode_siswa='" + ds_kode.getText() + "'";
-            //            try {
-                //                PreparedStatement stat = conn.prepareStatement(sql);
-                //                stat.executeUpdate();
-                //                JOptionPane.showMessageDialog(null, "data berhasi dihapus");;
-                //                clear();
-                //                ds_kode.requestFocus();
-                //                datatable();
-                //                autoKodeSiswa();
-                //                ds_simpan.setVisible(true);
-                //            } catch (SQLException e) {
-                //                JOptionPane.showMessageDialog(null, "Data gagal dihapus" + e);
-                //            }
-            //        }
+        int konfirmasi = JOptionPane.showConfirmDialog(
+                this,
+                "Yakin ingin menghapus data ini?",
+                "Konfirmasi",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (konfirmasi == JOptionPane.YES_OPTION) {
+            String sql = "DELETE FROM alternatif WHERE kode_alternatif=?";
+            try {
+                PreparedStatement ps = conn.prepareStatement(sql);
+                ps.setString(1, ds_kode.getText());
+                ps.executeUpdate();
+
+                JOptionPane.showMessageDialog(this, "Data berhasil dihapus");
+
+                datatable();
+                clear();
+                autoKodeAlternatif();
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Gagal hapus data: " + e.getMessage());
+            }
+        }
     }//GEN-LAST:event_ds_hapusActionPerformed
 
     private void ds_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_ubahActionPerformed
-        //        // TODO add your handling code here:
-        //        try {
-            //            String sql = "UPDATE alternatif SET kode_siswa=?, nisn=?, nama_siswa=?, kelas=?,jenkel=?, semester=?,tahun_ajaran=? WHERE kode_siswa=?";
-            //            PreparedStatement stat = conn.prepareStatement(sql);
-            //
-            //            stat.setString(1, ds_kode.getText());
-            //            stat.setString(2, ds_nisn.getText());
-            //            stat.setString(3, ds_namasiswa.getText());
-            //            stat.setString(4, ds_kelas.getText());
-            //            stat.setString(5, ds_jenkel.getSelectedItem().toString());
-            //            stat.setString(6, ds_semester.getSelectedItem().toString());
-            //            stat.setString(7, ds_tahun.getText());
-            //            stat.setString(8, ds_kode.getText());
-            //
-            //            stat.executeUpdate();
-            //
-            //            JOptionPane.showMessageDialog(null, "Data berhasil diubah");
-            //
-            //            clear();
-            //            ds_kode.requestFocus();
-            //            datatable();
-            //            ds_simpan.setVisible(true);
-            //        } catch (SQLException e) {
-            //            JOptionPane.showMessageDialog(null, "Data gagal diubah: " + e.getMessage());
-            //        } catch (NullPointerException e) {
-            //            JOptionPane.showMessageDialog(null, "Terjadi kesalahan tidak terduga: " + e.getMessage());
-            //            e.printStackTrace();
-            //        }
+        String sql = "UPDATE alternatif SET nama_alternatif=? WHERE kode_alternatif=?";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, ds_nama.getText());
+            ps.setString(2, ds_kode.getText());
+
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Data berhasil diubah");
+
+            datatable();
+            clear();
+            autoKodeAlternatif();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal ubah data: " + e.getMessage());
+        }
     }//GEN-LAST:event_ds_ubahActionPerformed
 
     private void ds_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_simpanActionPerformed
-        //        String kode = ds_kode.getText();
-        //        String nisn = ds_nisn.getText();
-        //        String nama = ds_namasiswa.getText();
-        //        String kelas = ds_kelas.getText();
-        //        String jenkel = ds_jenkel.getSelectedItem().toString();
-        //        String semester = ds_semester.getSelectedItem().toString();
-        //        String tahun = ds_kelas.getText();
-        //
-        //        String sql = "INSERT INTO alternatif (kode_siswa,nisn,nama_siswa,kelas,jenkel,semester,tahun_ajaran) VALUES (?,?,?,?,?,?,?)";
-        //        try {
-            //            PreparedStatement stat = conn.prepareStatement(sql);
-            //            stat.setString(1, kode);
-            //            stat.setString(2, nisn);
-            //            stat.setString(3, nama);
-            //            stat.setString(4, kelas);
-            //            stat.setString(5, jenkel);
-            //            stat.setString(6, semester);
-            //            stat.setString(7, tahun);
-            //
-            //            stat.executeUpdate();
-            //            JOptionPane.showMessageDialog(null, "Data Berhasil Disimpan");
-            //            clear();
-            //            ds_kode.requestFocus();
-            //            ds_simpan.setVisible(true);
-            //            autoKodeSiswa();
-            //
-            //            datatable();
-            //        } catch (SQLException e) {
-            //            JOptionPane.showMessageDialog(null, "Data Gagal Disimpan " + e);
-            //        }
+        String sql = "INSERT INTO alternatif (kode_alternatif, nama_alternatif) VALUES (?, ?)";
+        try {
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, ds_kode.getText());
+            ps.setString(2, ds_nama.getText());
+
+            ps.executeUpdate();
+            JOptionPane.showMessageDialog(this, "Data berhasil disimpan");
+
+            datatable();
+            clear();
+            autoKodeAlternatif();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Gagal simpan data: " + e.getMessage());
+        }
     }//GEN-LAST:event_ds_simpanActionPerformed
 
     private void ds_cariActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_cariActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_ds_cariActionPerformed
 
-    private void tablesiswaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablesiswaMouseClicked
-        // TODO add your handling code here:
-        int clc = tablesiswa.getSelectedRow();
-        //        String a = tabmode.getValueAt(clc, 0).toString();
-        //        String b = tabmode.getValueAt(clc, 1).toString();
-        //        String c = tabmode.getValueAt(clc, 2).toString();
-        //        String d = tabmode.getValueAt(clc, 3).toString();
-        //        String e = tabmode.getValueAt(clc, 4).toString();
-        //        String f = tabmode.getValueAt(clc, 5).toString();
-        //        String g = tabmode.getValueAt(clc, 6).toString();
-
-        //        ds_kode.setText(a);
-        //        ds_nisn.setText(b);
-        //        ds_namasiswa.setText(c);
-        //        ds_kelas.setText(d);
-        //        ds_jenkel.setSelectedIndex(0);
-        //        ds_semester.setSelectedIndex(0);
-        //        ds_tahun.setText(g);
-        //
-        //        ds_simpan.setVisible(false);
-    }//GEN-LAST:event_tablesiswaMouseClicked
+    private void tablealternatifMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablealternatifMouseClicked
+        int bar = tablealternatif.getSelectedRow();
+        ds_kode.setText(tabmode.getValueAt(bar, 0).toString());
+        ds_nama.setText(tabmode.getValueAt(bar, 1).toString());
+    }//GEN-LAST:event_tablealternatifMouseClicked
 
     private void ds_kodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_kodeActionPerformed
         // TODO add your handling code here:
@@ -350,16 +402,24 @@ public class DataAlternatif extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(DataAlternatif.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataAlternatif.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(DataAlternatif.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataAlternatif.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(DataAlternatif.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataAlternatif.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(DataAlternatif.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(DataAlternatif.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
         //</editor-fold>
@@ -377,7 +437,7 @@ public class DataAlternatif extends javax.swing.JFrame {
     private javax.swing.JButton ds_hapus;
     private javax.swing.JButton ds_kembali;
     private javax.swing.JTextField ds_kode;
-    private javax.swing.JTextField ds_nisn;
+    private javax.swing.JTextField ds_nama;
     private javax.swing.JButton ds_simpan;
     private javax.swing.JButton ds_ubah;
     private javax.swing.JLabel jLabel1;
@@ -387,6 +447,6 @@ public class DataAlternatif extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tablesiswa;
+    private javax.swing.JTable tablealternatif;
     // End of variables declaration//GEN-END:variables
 }

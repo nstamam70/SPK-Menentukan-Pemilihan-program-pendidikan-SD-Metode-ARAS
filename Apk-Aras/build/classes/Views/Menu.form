@@ -35,6 +35,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Data Kriteria"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="datakriteriaActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="datanilai">
               <Properties>
@@ -43,6 +46,9 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="Data Nilai"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="datanilaiActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
