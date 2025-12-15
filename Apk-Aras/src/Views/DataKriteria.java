@@ -1,4 +1,4 @@
-/*
+    /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -52,7 +52,7 @@ public class DataKriteria extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel(null, kolom);
         tablekriteria.setModel(model);
 
-        String sql = "SELECT kode_kriteria, nama_kriteria, tipe, bobot FROM kriteria";
+        String sql = "SELECT kode_kriteria, nama_kriteria, tipe_kriteria, bobot_kriteria FROM kriteria";
         try {
             Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
@@ -61,8 +61,8 @@ public class DataKriteria extends javax.swing.JFrame {
                 model.addRow(new Object[]{
                     rs.getString("kode_kriteria"),
                     rs.getString("nama_kriteria"),
-                    rs.getString("tipe"),
-                    rs.getDouble("bobot")
+                    rs.getString("tipe_kriteria"),
+                    rs.getDouble("bobot_kriteria")
                 });
             }
         } catch (SQLException e) {
@@ -334,7 +334,7 @@ public class DataKriteria extends javax.swing.JFrame {
     }//GEN-LAST:event_tablekriteriaMouseClicked
 
     private void k_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_simpanActionPerformed
-        String sql = "INSERT INTO kriteria (kode_kriteria, nama_kriteria, tipe, bobot) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO kriteria (kode_kriteria, nama_kriteria, tipe_kriteria, bobot_kriteria) VALUES (?,?,?,?)";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, k_kode.getText());
@@ -355,7 +355,7 @@ public class DataKriteria extends javax.swing.JFrame {
     }//GEN-LAST:event_k_simpanActionPerformed
 
     private void k_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_ubahActionPerformed
-        String sql = "UPDATE kriteria SET nama_kriteria=?, tipe=?, bobot=? WHERE kode_kriteria=?";
+        String sql = "UPDATE kriteria SET nama_kriteria=?, tipe_kriteria=?, bobot_kriteria=? WHERE kode_kriteria=?";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, k_nama.getText());

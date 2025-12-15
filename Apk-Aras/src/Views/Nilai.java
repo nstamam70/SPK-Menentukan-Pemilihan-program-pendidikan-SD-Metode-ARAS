@@ -12,8 +12,8 @@ import java.sql.SQLException;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-//import connection.itemSiswa;
-//import connection.itemKriteria;
+import Connections.itemAlternatif;
+import Connections.itemKriteria;
 
 /**
  *
@@ -100,9 +100,9 @@ public class Nilai extends javax.swing.JFrame {
                 ResultSet rs = pst.executeQuery();
 
                 while (rs.next()) {
-                    int idSiswa = rs.getInt("id_alternatif");
-                    String namaSiswa = rs.getString("nama_alternatif");
-//                    comboBox.addItem(new itemSiswa(idSiswa, namaSiswa)); // ← langsung masukkan objek Item!
+                    int idAlternatif = rs.getInt("id_alternatif");
+                    String namaAlternatif = rs.getString("nama_alternatif");
+                    comboBox.addItem(new itemAlternatif(idAlternatif, namaAlternatif)); // ←/ langsung masukkan objek Item!
                 }
 
                 rs.close();
@@ -126,7 +126,7 @@ public class Nilai extends javax.swing.JFrame {
                 while (rs.next()) {
                     int idKriteria = rs.getInt("id_kriteria");
                     String namaKriteria = rs.getString("nama_kriteria");
-//                    comboBox.addItem(new itemKriteria(idKriteria, namaKriteria));
+                    comboBox.addItem(new itemKriteria(idKriteria, namaKriteria));
                 }
 
                 rs.close();
@@ -139,7 +139,7 @@ public class Nilai extends javax.swing.JFrame {
 
     private void autoKodeNilai() {
         try {
-            String sql = "SELECT MAX(kode) FROM nilai_alternatif";
+            String sql = "SELECT MAX(kode_alternatif) FROM nilai_alternatif";
             java.sql.Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
 
@@ -234,7 +234,7 @@ public class Nilai extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1068, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -397,7 +397,7 @@ public class Nilai extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1070, 600));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 70, 1110, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

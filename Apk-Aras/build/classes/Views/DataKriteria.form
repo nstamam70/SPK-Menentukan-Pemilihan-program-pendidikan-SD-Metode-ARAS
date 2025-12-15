@@ -97,9 +97,9 @@
                                   <EmptySpace min="-2" pref="205" max="-2" attributes="0"/>
                                   <Component id="k_simpan" min="-2" pref="119" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="k_ubah" pref="115" max="32767" attributes="0"/>
+                                  <Component id="k_ubah" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="k_hapus" pref="115" max="32767" attributes="0"/>
+                                  <Component id="k_hapus" max="32767" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="k_kembali" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="140" max="-2" attributes="0"/>

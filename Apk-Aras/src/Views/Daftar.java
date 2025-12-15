@@ -41,14 +41,14 @@ public class Daftar extends javax.swing.JFrame {
 
         try {
 
-            String cekSql = "SELECT * FROM user WHERE username = '" + user + "'";
+            String cekSql = "SELECT * FROM users WHERE username = '" + user + "'";
             st = conn.createStatement();
             ResultSet rs = st.executeQuery(cekSql);
 
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Username sudah terdaftar, silakan gunakan username lain.");
             } else {
-                String sql = "INSERT INTO user (username, password) VALUES (?, MD5(?))";
+                String sql = "INSERT INTO users (username, password) VALUES (?, MD5(?))";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, user);
                 ps.setString(2, pass);

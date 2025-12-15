@@ -43,7 +43,7 @@ public class Login extends javax.swing.JFrame {
             lg_password.requestFocus();
         } else {
             try {
-                String sql = "SELECT username FROM user WHERE username = ? AND password = MD5(?)";
+                String sql = "SELECT username FROM users WHERE username = ? AND password = MD5(?)";
                 PreparedStatement ps = conn.prepareStatement(sql);
                 ps.setString(1, user);
                 ps.setString(2, pass);
