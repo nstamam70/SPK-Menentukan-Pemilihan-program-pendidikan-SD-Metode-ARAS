@@ -139,7 +139,7 @@ public class Nilai extends javax.swing.JFrame {
 
     private void autoKodeNilai() {
         try {
-            String sql = "SELECT MAX(kode_alternatif) FROM nilai_alternatif";
+            String sql = "SELECT MAX(kode) FROM nilai_alternatif";
             java.sql.Statement stat = conn.createStatement();
             ResultSet rs = stat.executeQuery(sql);
 
@@ -410,16 +410,16 @@ public class Nilai extends javax.swing.JFrame {
 
     private void dn_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dn_simpanActionPerformed
         String kode = dn_kode.getText();
-//        itemSiswa siswa = (itemSiswa) dn_nama.getSelectedItem();
-//        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
+        itemAlternatif alternatif = (itemAlternatif) dn_nama.getSelectedItem();
+        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
         String nilai = dn_nilai.getText();
 
-        String sql = "INSERT INTO nilai_siswa (kode, id_alternatif, id_alternatif, nilai) VALUES (?,?,?,?)";
+        String sql = "INSERT INTO nilai_alternatif (kode, id_alternatif, id_kriteria, nilai) VALUES (?,?,?,?)";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
             stat.setString(1, kode);
-//            stat.setInt(2, siswa.getIdSiswa());      // ⬅️ pakai ID
-//            stat.setInt(3, kriteria.getIdKriteria());   // ⬅️ pakai ID
+            stat.setInt(2, alternatif.getIdAlternatif());      // ⬅️ pakai ID
+            stat.setInt(3, kriteria.getIdKriteria());   // ⬅️ pakai ID
             stat.setString(4, nilai);
 
             stat.executeUpdate();
@@ -435,15 +435,15 @@ public class Nilai extends javax.swing.JFrame {
 
     private void dn_ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dn_ubahActionPerformed
         String kode = dn_kode.getText();
-//        itemSiswa siswa = (itemSiswa) dn_nama.getSelectedItem();
-//        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
+        itemAlternatif alternatif = (itemAlternatif) dn_nama.getSelectedItem();
+        itemKriteria kriteria = (itemKriteria) dn_kriteria.getSelectedItem();
         String nilai = dn_nilai.getText();
 
-        String sql = "UPDATE nilai_siswa SET id_alternatif=?, id_kriteria=?, nilai=? WHERE kode=?";
+        String sql = "UPDATE nilai_alternatif SET id_alternatif=?, id_kriteria=?, nilai=? WHERE kode=?";
         try {
             PreparedStatement stat = conn.prepareStatement(sql);
-//            stat.setInt(1, siswa.getIdSiswa());
-//            stat.setInt(2, kriteria.getIdKriteria());
+            stat.setInt(1, alternatif.getIdAlternatif());
+            stat.setInt(2, kriteria.getIdKriteria());
             stat.setString(3, nilai);
             stat.setString(4, kode);
 

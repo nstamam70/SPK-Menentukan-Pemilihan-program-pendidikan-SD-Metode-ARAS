@@ -33,6 +33,7 @@ public class Menu extends javax.swing.JFrame {
         datakriteria = new javax.swing.JMenuItem();
         datanilai = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        penilaian = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
@@ -75,6 +76,15 @@ public class Menu extends javax.swing.JFrame {
 
         jMenu2.setText("Penilaian");
         jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+
+        penilaian.setText("Proses Perhitungan");
+        penilaian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                penilaianActionPerformed(evt);
+            }
+        });
+        jMenu2.add(penilaian);
+
         jMenuBar1.add(jMenu2);
 
         jMenu3.setText("Laporan");
@@ -129,9 +139,15 @@ public class Menu extends javax.swing.JFrame {
 
     private void datanilaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_datanilaiActionPerformed
         // TODO add your handling code here:
-         new Nilai().setVisible(true);
+        new Nilai().setVisible(true);
         dispose();
     }//GEN-LAST:event_datanilaiActionPerformed
+
+    private void penilaianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_penilaianActionPerformed
+        // TODO add your handling code here:
+        new Proses_ARAS().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_penilaianActionPerformed
 
     /**
      * @param args the command line arguments
@@ -178,5 +194,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem penilaian;
     // End of variables declaration//GEN-END:variables
 }
