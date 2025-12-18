@@ -25,6 +25,7 @@ import java.util.Map;
  */
 public class Proses_ARAS extends javax.swing.JFrame {
 
+    private DefaultTableModel tabmode;
     private Connection conn = new connect().connect();
 
     /**
@@ -80,7 +81,8 @@ public class Proses_ARAS extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(null, "Gagal tampil Tabel X Dinamis: " + e.getMessage());
 //        }
 //    }
-    private void tampilTabelX() {
+
+    private void tampilMatriks() {
         try {
             List<String> kriteriaList = new ArrayList<>();
             List<Integer> idKriteriaList = new ArrayList<>();
@@ -92,7 +94,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
             );
 
             StringBuilder sqlSelect = new StringBuilder(
-                    "SELECT a.nama_alternatif"
+                    "SELECT a.id_alternatif, a.nama_alternatif"
             );
 
             while (rsKriteria.next()) {
@@ -112,8 +114,8 @@ public class Proses_ARAS extends javax.swing.JFrame {
             sqlSelect.append(
                     " FROM nilai_alternatif n "
                     + " JOIN alternatif a ON n.id_alternatif = a.id_alternatif "
-                    + " GROUP BY a.nama_alternatif "
-                    + " ORDER BY a.nama_alternatif"
+                    + " GROUP BY a.id_alternatif, a.nama_alternatif "
+                    + " ORDER BY a.id_alternatif"
             );
 
             // Header tabel
@@ -178,280 +180,291 @@ public class Proses_ARAS extends javax.swing.JFrame {
                     "Gagal menampilkan solusi ideal: " + e.getMessage());
         }
     }
-private void tampilTabelNormalisasi() {
+    
+   private void tampilTabelSolusiIdealTernormalisasi() {
     try {
-        // Formatter 4 angka di belakang koma
-        DecimalFormat df = new DecimalFormat("#.####");
+        DefaultTableModel model = new DefaultTableModel();
+        model.addColumn("Nama Kriteria");
+        model.addColumn("Tipe");
+        model.addColumn("A0 Ternormalisasi");
 
-        // 1. Ambil daftar kriteria
-        List<Integer> idKriteriaList = new ArrayList<>();
-        List<String> namaKriteriaList = new ArrayList<>();
+        a0_normalisasi.setModel(model);
 
-        Statement stK = conn.createStatement();
-        ResultSet rsK = stK.executeQuery(
-            "SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
+        DecimalFormat df = new DecimalFormat("#0.0000");
 
-        StringBuilder sql = new StringBuilder("SELECT a.nama_alternatif");
+        String sql =
+            "SELECT k.nama_kriteria, k.tipe_kriteria, s.a0_ternormalisasi " +
+            "FROM solusi_ideal s " +
+            "JOIN kriteria k ON k.id_kriteria = s.id_kriteria " +
+            "ORDER BY k.id_kriteria";
 
-        while (rsK.next()) {
-            int id = rsK.getInt("id_kriteria");
-            String nama = rsK.getString("nama_kriteria");
-
-            idKriteriaList.add(id);
-            namaKriteriaList.add(nama);
-
-            sql.append(", MAX(CASE WHEN ar.id_kriteria = ")
-               .append(id)
-               .append(" THEN ar.nilai_normalisasi END) AS `")
-               .append(nama).append("`");
-        }
-
-        sql.append(" FROM aras ar ")
-           .append("JOIN alternatif a ON a.id_alternatif = ar.id_alternatif ")
-           .append("GROUP BY a.nama_alternatif");
-
-        // 2. Header tabel
-        List<String> kolom = new ArrayList<>();
-        kolom.add("Alternatif");
-        kolom.addAll(namaKriteriaList);
-
-        DefaultTableModel model = new DefaultTableModel(null, kolom.toArray());
-        tabelnormalisasi.setModel(model);
-
-        // 3. Eksekusi query
         Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(sql.toString());
+        ResultSet rs = st.executeQuery(sql);
 
         while (rs.next()) {
-            List<Object> row = new ArrayList<>();
-            row.add(rs.getString("nama_alternatif"));
-
-            for (String k : namaKriteriaList) {
-                double nilai = rs.getDouble(k);
-                row.add(df.format(nilai)); // ← PEMBULATAN DI SINI
-            }
-
-            model.addRow(row.toArray());
+            model.addRow(new Object[]{
+                rs.getString("nama_kriteria"),
+                rs.getString("tipe_kriteria"),
+                df.format(rs.getDouble("a0_ternormalisasi"))
+            });
         }
 
+        rs.close();
+        st.close();
+
     } catch (Exception e) {
-        JOptionPane.showMessageDialog(this,
-            "Gagal tampil normalisasi: " + e.getMessage());
+        JOptionPane.showMessageDialog(
+            this,
+            "Gagal menampilkan solusi ideal: " + e.getMessage()
+        );
     }
 }
 
-//    private void tampilTabelNormalisasi() {
-//    try {
-//        
-//        
-//        // 1. Ambil daftar kriteria
-//        List<Integer> idKriteriaList = new ArrayList<>();
-//        List<String> namaKriteriaList = new ArrayList<>();
-//
-//        Statement stK = conn.createStatement();
-//        ResultSet rsK = stK.executeQuery(
-//            "SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
-//
-//        StringBuilder sql = new StringBuilder("SELECT a.nama_alternatif");
-//        
-//
-//        while (rsK.next()) {
-//            int id = rsK.getInt("id_kriteria");
-//            String nama = rsK.getString("nama_kriteria");
-//
-//            idKriteriaList.add(id);
-//            namaKriteriaList.add(nama);
-//
-//            sql.append(", MAX(CASE WHEN ar.id_kriteria = ")
-//               .append(id)
-//               .append(" THEN ar.nilai_normalisasi END) AS `")
-//               .append(nama).append("`");
-//        }
-//
-//        sql.append(" FROM aras ar ")
-//           .append("JOIN alternatif a ON a.id_alternatif = ar.id_alternatif ")
-//           .append("GROUP BY a.nama_alternatif");
-//
-//        // 2. Header tabel
-//        List<String> kolom = new ArrayList<>();
-//        kolom.add("Alternatif");
-//        kolom.addAll(namaKriteriaList);
-//
-//        DefaultTableModel model = new DefaultTableModel(null, kolom.toArray());
-//        tabelnormalisasi.setModel(model);
-//
-//        // 3. Eksekusi query
-//        Statement st = conn.createStatement();
-//        ResultSet rs = st.executeQuery(sql.toString());
-//
-//        while (rs.next()) {
-//            List<Object> row = new ArrayList<>();
-//            row.add(rs.getString("nama_alternatif"));
-//
-//            for (String k : namaKriteriaList) {
-//                row.add(rs.getDouble(k));
-//            }
-//
-//            model.addRow(row.toArray());
-//        }
-//
-//    } catch (Exception e) {
-//        JOptionPane.showMessageDialog(this,
-//            "Gagal tampil normalisasi: " + e.getMessage());
-//    }
-//}
 
-//    private void simpanDanTampilkanNormalisasiSAW() {
-//        try {
-//            Statement stClear = conn.createStatement();
-//            stClear.executeUpdate("DELETE FROM saw");
-//
-//            Map<Integer, Float> nilaiMaxPerKriteria = new HashMap<>();
-//            Statement stMax = conn.createStatement();
-//            ResultSet rsMax = stMax.executeQuery("SELECT id_kriteria, MAX(nilai) AS max_nilai FROM nilai_siswa GROUP BY id_kriteria");
-//            while (rsMax.next()) {
-//                int idKriteria = rsMax.getInt("id_kriteria");
-//                float maxNilai = rsMax.getFloat("max_nilai");
-//                nilaiMaxPerKriteria.put(idKriteria, maxNilai);
-//            }
-//
-//            String sql = "SELECT * FROM nilai_siswa";
-//            Statement st = conn.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//
-//            String insertSql = "INSERT INTO saw (id_siswa, id_penilaian, id_kriteria, nilai_normalisasi) VALUES (?, ?, ?, ?)";
-//            PreparedStatement pstInsert = conn.prepareStatement(insertSql);
-//
-//            while (rs.next()) {
-//                int idSiswa = rs.getInt("id_siswa");
-//                int idPenilaian = rs.getInt("id_penilaian");
-//                int idKriteria = rs.getInt("id_kriteria");
-//                float nilai = rs.getFloat("nilai");
-//
-//                float max = nilaiMaxPerKriteria.getOrDefault(idKriteria, 1f);
-//                float normalisasi = (max == 0) ? 0 : nilai / max;
-//
-//                pstInsert.setInt(1, idSiswa);
-//                pstInsert.setInt(2, idPenilaian);
-//                pstInsert.setInt(3, idKriteria);
-//                pstInsert.setFloat(4, normalisasi);
-//                pstInsert.addBatch();
-//            }
-//
-//            pstInsert.executeBatch();
-//
-//            List<String> kriteriaList = new ArrayList<>();
-//            Statement stKriteria = conn.createStatement();
-//            ResultSet rsKriteria = stKriteria.executeQuery("SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
-//
-//            Map<Integer, String> mapKriteria = new HashMap<>();
-//            while (rsKriteria.next()) {
-//                int id = rsKriteria.getInt("id_kriteria");
-//                String nama = rsKriteria.getString("nama_kriteria");
-//                mapKriteria.put(id, nama);
-//                kriteriaList.add(nama);
-//            }
-//
-//            List<String> kolomHeader = new ArrayList<>();
-//            kolomHeader.add("Nama Siswa");
-//            kolomHeader.addAll(kriteriaList);
-//            DefaultTableModel model = new DefaultTableModel(null, kolomHeader.toArray());
-//            tabelsolusiideal.setModel(model);
-//
-//            String sqlTampil = "SELECT a.nama_siswa, s.id_kriteria, s.nilai_normalisasi "
-//                    + "FROM saw s JOIN alternatif a ON s.id_siswa = a.id_siswa ORDER BY a.nama_siswa, s.id_kriteria";
-//
-//            Statement stTampil = conn.createStatement();
-//            ResultSet rsTampil = stTampil.executeQuery(sqlTampil);
-//
-//            Map<String, Map<String, Float>> dataMap = new LinkedHashMap<>();
-//            while (rsTampil.next()) {
-//                String namaSiswa = rsTampil.getString("nama_siswa");
-//                int idKriteria = rsTampil.getInt("id_kriteria");
-//                float nilaiNorm = rsTampil.getFloat("nilai_normalisasi");
-//
-//                String namaKriteria = mapKriteria.get(idKriteria);
-//                dataMap.putIfAbsent(namaSiswa, new HashMap<>());
-//                dataMap.get(namaSiswa).put(namaKriteria, nilaiNorm);
-//            }
-//
-//            for (String nama : dataMap.keySet()) {
-//                List<Object> baris = new ArrayList<>();
-//                baris.add(nama);
-//                for (String kriteria : kriteriaList) {
-//                    Float nilai = dataMap.get(nama).getOrDefault(kriteria, 0f);
-//                    baris.add(String.format("%.6f", nilai));
-//                }
-//                model.addRow(baris.toArray());
-//            }
-//
-//            JOptionPane.showMessageDialog(null, "Normalisasi disimpan dan ditampilkan.");
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Gagal simpan/tampil normalisasi: " + e.getMessage());
-//        }
-//    }
-
-    private void hitungDanTampilkanSkorAkhirSAW() {
+    private void tampilTabelNormalisasi() {
         try {
+            // Formatter 4 angka di belakang koma
+            DecimalFormat df = new DecimalFormat("#.####");
 
-            Map<Integer, Float> bobotPerKriteria = new HashMap<>();
-            Statement stBobot = conn.createStatement();
-            ResultSet rsBobot = stBobot.executeQuery("SELECT id_kriteria, bobot_kriteria FROM kriteria");
-            while (rsBobot.next()) {
-                int idKriteria = rsBobot.getInt("id_kriteria");
-                float bobot = rsBobot.getFloat("bobot_kriteria");
-                bobotPerKriteria.put(idKriteria, bobot);
+            // 1. Ambil daftar kriteria
+            List<Integer> idKriteriaList = new ArrayList<>();
+            List<String> namaKriteriaList = new ArrayList<>();
+
+            Statement stK = conn.createStatement();
+            ResultSet rsK = stK.executeQuery(
+                    "SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
+
+            StringBuilder sql = new StringBuilder("SELECT a.nama_alternatif");
+
+            while (rsK.next()) {
+                int id = rsK.getInt("id_kriteria");
+                String nama = rsK.getString("nama_kriteria");
+
+                idKriteriaList.add(id);
+                namaKriteriaList.add(nama);
+
+                sql.append(", MAX(CASE WHEN ar.id_kriteria = ")
+                        .append(id)
+                        .append(" THEN ar.nilai_normalisasi END) AS `")
+                        .append(nama).append("`");
             }
 
-            String sql = "SELECT s.id_siswa, a.nama_siswa, s.id_kriteria, s.nilai_normalisasi "
-                    + "FROM saw s JOIN alternatif a ON s.id_siswa = a.id_siswa "
-                    + "ORDER BY s.id_siswa, s.id_kriteria";
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            sql.append(" FROM aras ar ")
+                    .append("JOIN alternatif a ON a.id_alternatif = ar.id_alternatif ")
+                    .append("GROUP BY a.nama_alternatif");
 
-            Map<Integer, Float> skorAkhirPerSiswa = new LinkedHashMap<>();
-            Map<Integer, String> namaSiswaMap = new LinkedHashMap<>();
+            // 2. Header tabel
+            List<String> kolom = new ArrayList<>();
+            kolom.add("Alternatif");
+            kolom.addAll(namaKriteriaList);
+
+            DefaultTableModel model = new DefaultTableModel(null, kolom.toArray());
+            tabelnormalisasi.setModel(model);
+
+            // 3. Eksekusi query
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql.toString());
 
             while (rs.next()) {
-                int idSiswa = rs.getInt("id_siswa");
-                String namaSiswa = rs.getString("nama_siswa");
-                int idKriteria = rs.getInt("id_kriteria");
-                float nilaiNorm = rs.getFloat("nilai_normalisasi");
-                float bobot = bobotPerKriteria.getOrDefault(idKriteria, 0f);
-                float nilaiBobot = nilaiNorm * bobot;
+                List<Object> row = new ArrayList<>();
+                row.add(rs.getString("nama_alternatif"));
 
-                skorAkhirPerSiswa.put(idSiswa, skorAkhirPerSiswa.getOrDefault(idSiswa, 0f) + nilaiBobot);
-                namaSiswaMap.put(idSiswa, namaSiswa);
+                for (String k : namaKriteriaList) {
+                    double nilai = rs.getDouble(k);
+                    row.add(df.format(nilai)); // ← PEMBULATAN DI SINI
+                }
+
+                model.addRow(row.toArray());
             }
 
-            List<Map.Entry<Integer, Float>> listSkor = new ArrayList<>(skorAkhirPerSiswa.entrySet());
-            listSkor.sort((a, b) -> Float.compare(b.getValue(), a.getValue()));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,
+                    "Gagal tampil normalisasi: " + e.getMessage());
+        }
+    }
 
-            String[] kolom = {"Rangking", "Nama Siswa", "Skor Akhir"};
-            DefaultTableModel model = new DefaultTableModel(null, kolom);
-            tablePrefrensi.setModel(model);
-            Statement clearSt = conn.createStatement();
-            clearSt.executeUpdate("DELETE FROM hasil_akhir");
+    private void hitungDanTampilkanNormalisasiARAS() {
+        try {
 
-            PreparedStatement ps = conn.prepareStatement("INSERT INTO hasil_akhir (id_siswa, skor_akhir) VALUES (?, ?)");
+            /* ================================
+           1. Ambil tipe kriteria
+           ================================ */
+            Map<Integer, String> tipe = new HashMap<>();
 
-            int no = 1;
-            for (Map.Entry<Integer, Float> entry : listSkor) {
-                int id = entry.getKey();
-                String nama = namaSiswaMap.get(id);
-                float skor = entry.getValue();
-                model.addRow(new Object[]{no++, nama, String.format("%.4f", skor)});
-                ps.setInt(1, id);
-                ps.setFloat(2, skor);
+            Statement stK = conn.createStatement();
+            ResultSet rsK = stK.executeQuery(
+                    "SELECT id_kriteria, tipe_kriteria FROM kriteria"
+            );
+
+            while (rsK.next()) {
+                tipe.put(
+                        rsK.getInt("id_kriteria"),
+                        rsK.getString("tipe_kriteria").toLowerCase()
+                );
+            }
+
+            /* ================================
+           2. Hitung penyebut (Σxij + A0)
+           ================================ */
+            Map<Integer, Double> penyebut = new HashMap<>();
+
+            Statement stP = conn.createStatement();
+            ResultSet rsP = stP.executeQuery(
+                    "SELECT n.id_kriteria, n.nilai, s.nilai_a0 "
+                    + "FROM nilai_alternatif n "
+                    + "JOIN solusi_ideal s ON s.id_kriteria = n.id_kriteria"
+            );
+
+            while (rsP.next()) {
+                int idK = rsP.getInt("id_kriteria");
+                double nilai = rsP.getDouble("nilai");
+                double a0 = rsP.getDouble("nilai_a0");
+
+                double nilaiHitung = tipe.get(idK).equals("cost")
+                        ? (1.0 / nilai)
+                        : nilai;
+
+                penyebut.put(idK, penyebut.getOrDefault(idK, 0.0) + nilaiHitung);
+            }
+
+            Statement stA0 = conn.createStatement();
+            ResultSet rsA0 = stA0.executeQuery(
+                    "SELECT id_kriteria, nilai_a0 FROM solusi_ideal"
+            );
+
+            while (rsA0.next()) {
+                int idK = rsA0.getInt("id_kriteria");
+                double a0 = rsA0.getDouble("nilai_a0");
+
+                double a0Hitung = tipe.get(idK).equals("cost")
+                        ? (1.0 / a0)
+                        : a0;
+
+                penyebut.put(idK, penyebut.get(idK) + a0Hitung);
+            }
+
+            /* ================================
+           3. Bersihkan tabel ARAS
+           ================================ */
+            Statement stClear = conn.createStatement();
+            stClear.executeUpdate("DELETE FROM aras");
+
+            /* ================================
+           4. Simpan normalisasi alternatif
+           ================================ */
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO aras (id_penilaian, id_alternatif, id_kriteria, nilai_normalisasi) "
+                    + "VALUES (?, ?, ?, ?)"
+            );
+
+            Statement stN = conn.createStatement();
+            ResultSet rsN = stN.executeQuery(
+                    "SELECT id_penilaian, id_alternatif, id_kriteria, nilai FROM nilai_alternatif"
+            );
+
+            while (rsN.next()) {
+                int idPenilaian = rsN.getInt("id_penilaian");
+                int idAlt = rsN.getInt("id_alternatif");
+                int idK = rsN.getInt("id_kriteria");
+                double nilai = rsN.getDouble("nilai");
+
+                double nilaiHitung = tipe.get(idK).equals("cost")
+                        ? (1.0 / nilai)
+                        : nilai;
+
+                double rij = nilaiHitung / penyebut.get(idK);
+
+                ps.setInt(1, idPenilaian);
+                ps.setInt(2, idAlt);
+                ps.setInt(3, idK);
+                ps.setDouble(4, rij);
                 ps.executeUpdate();
             }
 
-            ps.close();
-            JOptionPane.showMessageDialog(null, "Skor akhir berhasil dihitung, ditampilkan, dan disimpan.");
+            /* ================================
+           5. Simpan A0 ternormalisasi
+           ================================ */
+            PreparedStatement psA0 = conn.prepareStatement(
+                    "UPDATE solusi_ideal SET a0_ternormalisasi = ? WHERE id_kriteria = ?"
+            );
+
+            ResultSet rsA0Final = stA0.executeQuery(
+                    "SELECT id_kriteria, nilai_a0 FROM solusi_ideal"
+            );
+
+            while (rsA0Final.next()) {
+                int idK = rsA0Final.getInt("id_kriteria");
+                double a0 = rsA0Final.getDouble("nilai_a0");
+
+                double a0Hitung = tipe.get(idK).equals("cost")
+                        ? (1.0 / a0)
+                        : a0;
+
+                psA0.setDouble(1, a0Hitung / penyebut.get(idK));
+                psA0.setInt(2, idK);
+                psA0.executeUpdate();
+            }
+
+            /* ================================
+           6. TAMPILKAN TABEL NORMALISASI
+           (DIPERBAIKI, TANPA METHOD BARU)
+           ================================ */
+            List<String> kriteriaList = new ArrayList<>();
+
+            Statement stKT = conn.createStatement();
+            ResultSet rsKT = stKT.executeQuery(
+                    "SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria"
+            );
+
+            StringBuilder sql = new StringBuilder("SELECT a.nama_alternatif");
+
+            while (rsKT.next()) {
+                int idK = rsKT.getInt("id_kriteria");
+                String nama = rsKT.getString("nama_kriteria");
+                kriteriaList.add(nama);
+
+                sql.append(", MAX(CASE WHEN ar.id_kriteria = ")
+                        .append(idK)
+                        .append(" THEN ar.nilai_normalisasi END) AS `")
+                        .append(nama).append("`");
+            }
+
+            sql.append(
+                    " FROM aras ar "
+                    + " JOIN alternatif a ON ar.id_alternatif = a.id_alternatif "
+                    + " GROUP BY a.id_alternatif, a.nama_alternatif "
+                    + " ORDER BY a.id_alternatif"
+            );
+
+            DefaultTableModel model
+                    = new DefaultTableModel(
+                            new Object[]{"Alternatif"}, 0
+                    );
+
+            for (String k : kriteriaList) {
+                model.addColumn(k);
+            }
+
+            tabelnormalisasi.setModel(model);
+
+            Statement stT = conn.createStatement();
+            ResultSet rsT = stT.executeQuery(sql.toString());
+
+            while (rsT.next()) {
+                List<Object> row = new ArrayList<>();
+                row.add(rsT.getString("nama_alternatif"));
+
+                for (String k : kriteriaList) {
+                    row.add(String.format("%.4f", rsT.getDouble(k)));
+                }
+
+                model.addRow(row.toArray());
+            }
+
+            JOptionPane.showMessageDialog(this, "Normalisasi ARAS berhasil");
 
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Gagal hitung/simpan skor akhir: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error normalisasi: " + e.getMessage());
         }
     }
 
@@ -477,7 +490,7 @@ private void tampilTabelNormalisasi() {
         jScrollPane3 = new javax.swing.JScrollPane();
         tablePrefrensi = new javax.swing.JTable();
         aras_normalisasi = new javax.swing.JButton();
-        saw_perhitungan = new javax.swing.JButton();
+        a0 = new javax.swing.JButton();
         tampilkan_matriks = new javax.swing.JButton();
         saw_kembali = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
@@ -487,6 +500,11 @@ private void tampilTabelNormalisasi() {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tabelnormalisasi = new javax.swing.JTable();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        a0_normalisasi = new javax.swing.JTable();
+        jLabel7 = new javax.swing.JLabel();
+        Si = new javax.swing.JButton();
+        Ki = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -498,15 +516,15 @@ private void tampilTabelNormalisasi() {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Proses Penilaian Siswa Terbaik");
+        jLabel1.setText("DWIKII NIH BOS");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 1078, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1074, Short.MAX_VALUE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -579,11 +597,11 @@ private void tampilTabelNormalisasi() {
             }
         });
 
-        saw_perhitungan.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        saw_perhitungan.setText("Hitung Perangkingan");
-        saw_perhitungan.addActionListener(new java.awt.event.ActionListener() {
+        a0.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        a0.setText("Tampilkan A0 ");
+        a0.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saw_perhitunganActionPerformed(evt);
+                a0ActionPerformed(evt);
             }
         });
 
@@ -645,43 +663,85 @@ private void tampilTabelNormalisasi() {
         ));
         jScrollPane5.setViewportView(tabelnormalisasi);
 
+        a0_normalisasi.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane6.setViewportView(a0_normalisasi);
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel7.setText("Solusi Ideal A0 Ternormalisasi");
+
+        Si.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Si.setText("Si");
+        Si.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                SiActionPerformed(evt);
+            }
+        });
+
+        Ki.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        Ki.setText("Ki");
+        Ki.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                KiActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 518, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 367, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 540, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addComponent(jLabel4)
                             .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(tampilkan_matriks)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(hitung_a0)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(aras_normalisasi, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saw_perhitungan, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(saw_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
+                            .addComponent(jLabel5)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(tampilkan_matriks)
+                                    .addGap(7, 7, 7)
+                                    .addComponent(hitung_a0)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(aras_normalisasi, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(a0)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Si, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(Ki, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(saw_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6))))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addGap(10, 10, 10))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -689,11 +749,16 @@ private void tampilTabelNormalisasi() {
                 .addGap(11, 11, 11)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
-                .addComponent(jLabel3)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel3))
+                    .addComponent(jLabel7))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -709,10 +774,12 @@ private void tampilTabelNormalisasi() {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tampilkan_matriks, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saw_perhitungan, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(a0, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(saw_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hitung_a0, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(aras_normalisasi, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(aras_normalisasi, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Si, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(Ki, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15))
         );
 
@@ -723,7 +790,7 @@ private void tampilTabelNormalisasi() {
 
     private void tampilkan_matriksActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tampilkan_matriksActionPerformed
         // TODO add your handling code here:
-        tampilTabelX();
+        tampilMatriks();
     }//GEN-LAST:event_tampilkan_matriksActionPerformed
 
     private void saw_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saw_kembaliActionPerformed
@@ -733,47 +800,12 @@ private void tampilTabelNormalisasi() {
     }//GEN-LAST:event_saw_kembaliActionPerformed
 
     private void aras_normalisasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aras_normalisasiActionPerformed
-        try {
-            Statement st = conn.createStatement();
-
-            // 1. Hitung normalisasi alternatif
-            st.executeUpdate(
-                    "REPLACE INTO aras (id_alternatif, id_kriteria, nilai_normalisasi) "
-                    + "SELECT n.id_alternatif, n.id_kriteria, "
-                    + "(CASE WHEN k.tipe_kriteria='benefit' THEN n.nilai ELSE (1/n.nilai) END) / "
-                    + "(SELECT SUM(CASE WHEN k2.tipe_kriteria='benefit' THEN n2.nilai ELSE (1/n2.nilai) END) + s.nilai_a0 "
-                    + " FROM nilai_alternatif n2 "
-                    + " JOIN kriteria k2 ON k2.id_kriteria=n2.id_kriteria "
-                    + " JOIN solusi_ideal s ON s.id_kriteria=n2.id_kriteria "
-                    + " WHERE n2.id_kriteria=n.id_kriteria) "
-                    + "FROM nilai_alternatif n "
-                    + "JOIN kriteria k ON k.id_kriteria=n.id_kriteria "
-                    + "JOIN solusi_ideal s ON s.id_kriteria=n.id_kriteria"
-            );
-
-            // 2. Update A0 ternormalisasi
-            st.executeUpdate(
-                    "UPDATE solusi_ideal s JOIN ( "
-                    + "SELECT n.id_kriteria, SUM(CASE WHEN k.tipe_kriteria='benefit' THEN n.nilai ELSE (1/n.nilai) END) total "
-                    + "FROM nilai_alternatif n JOIN kriteria k ON k.id_kriteria=n.id_kriteria GROUP BY n.id_kriteria "
-                    + ") t ON t.id_kriteria=s.id_kriteria "
-                    + "SET s.a0_ternormalisasi = s.nilai_a0 / (t.total + s.nilai_a0)"
-            );
-
-            tampilTabelNormalisasi();
-
-            JOptionPane.showMessageDialog(this,
-                    "Normalisasi berhasil dihitung dan ditampilkan");
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Gagal normalisasi: " + e.getMessage());
-        }
+        hitungDanTampilkanNormalisasiARAS();
     }//GEN-LAST:event_aras_normalisasiActionPerformed
 
-    private void saw_perhitunganActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saw_perhitunganActionPerformed
-        hitungDanTampilkanSkorAkhirSAW();
-    }//GEN-LAST:event_saw_perhitunganActionPerformed
+    private void a0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a0ActionPerformed
+tampilTabelSolusiIdealTernormalisasi();
+    }//GEN-LAST:event_a0ActionPerformed
 
     private void saw_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saw_simpanActionPerformed
         // TODO add your handling code here:
@@ -810,6 +842,14 @@ private void tampilTabelNormalisasi() {
                     "Proses solusi ideal gagal: " + e.getMessage());
         }
     }//GEN-LAST:event_hitung_a0ActionPerformed
+
+    private void SiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_SiActionPerformed
+
+    private void KiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KiActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_KiActionPerformed
 
     /**
      * @param args the command line arguments
@@ -856,6 +896,10 @@ private void tampilTabelNormalisasi() {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Ki;
+    private javax.swing.JButton Si;
+    private javax.swing.JButton a0;
+    private javax.swing.JTable a0_normalisasi;
     private javax.swing.JButton aras_normalisasi;
     private javax.swing.JButton hitung_a0;
     private javax.swing.JLabel jLabel1;
@@ -864,6 +908,7 @@ private void tampilTabelNormalisasi() {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -871,8 +916,8 @@ private void tampilTabelNormalisasi() {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JButton saw_kembali;
-    private javax.swing.JButton saw_perhitungan;
     private javax.swing.JTable tabelnormalisasi;
     private javax.swing.JTable tabelsolusiideal;
     private javax.swing.JTable tablePrefrensi;
