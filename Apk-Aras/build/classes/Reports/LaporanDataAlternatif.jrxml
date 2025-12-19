@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df352d65-a132-40b1-a85f-0e11226b06cc">
+	<property name="ireport.zoom" value="1.3310000000000004"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[select * from alternatif]]>
+	</queryString>
+	<field name="id_alternatif" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kode_alternatif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_alternatif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="136" y="0" width="525" height="79" uuid="b4e176ee-4356-4c61-a3ab-c45b200c9ea4"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P E M E R I N T A H  K O T A  B E K A S I
+SD NEGERI BINTARA JAYA IV
+Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
+Surel: bintarajayaiv@gmail.com]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="250" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="3b7d7b36-b252-4166-ab4e-4566b37a05ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Id]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="360" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="0b249854-63d3-4826-96d8-5986b5dda16f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Kode Alternatif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="470" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="5d609fe5-f135-4426-85d1-d3b1c9edc852"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Alternatif]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="23" splitType="Stretch">
+			<textField>
+				<reportElement x="250" y="0" width="110" height="20" uuid="ac78a21c-e768-4741-ac50-0a42718a615e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_alternatif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="360" y="0" width="110" height="20" uuid="f32e36ab-213d-4491-b3b7-b113e082e107"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_alternatif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="470" y="0" width="110" height="20" uuid="1fecc194-7d77-4be9-8648-3eeab4817493"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_alternatif}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="651" y="31" width="73" height="20" uuid="ec70bf5d-0b21-4353-bc69-6f113097db5f"/>
+				<text><![CDATA[Kepala Sekolah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="640" y="94" width="100" height="20" uuid="101fcad5-3d0d-4a97-b980-decd0dc398cb"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Mansur, M. Pd]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="602" y="0" width="38" height="20" uuid="a42f40ea-c71e-4965-b6de-48e7adf3513e"/>
+				<text><![CDATA[Bekasi,]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="640" y="0" width="100" height="20" uuid="d2af2088-520e-49c0-836b-c74080911bf4"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="702" y="4" width="100" height="20" uuid="a639f178-8085-4817-9936-169b84d080fc"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -159,14 +159,14 @@ public class Nilai extends javax.swing.JFrame {
         }
     }
 
-    private void cariNilai(String keyword) {
+  private void cariNilai(String keyword) {
         Object[] clcis = {"Kode", "Nama alternatif", "Nama Kriteria", "Nilai"};
         tabmode = new DefaultTableModel(null, clcis);
         tablenilai.setModel(tabmode);
 
         String sql = "SELECT n.kode, a.nama_alternatif, k.nama_kriteria, n.nilai "
-                + "FROM nilai_siswa n "
-                + "JOIN alternatif a ON n.id_alternatif = a.id_siswa "
+                + "FROM nilai_alternatif n "
+                + "JOIN alternatif a ON n.id_alternatif = a.id_alternatif "
                 + "JOIN kriteria k ON n.id_kriteria = k.id_kriteria "
                 + "WHERE a.nama_alternatif LIKE ?";
 
@@ -453,7 +453,7 @@ public class Nilai extends javax.swing.JFrame {
             dn_kode.requestFocus();
             dn_simpan.setVisible(true);
             datatable();
-             autoKodeNilai();
+            autoKodeNilai();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Data Gagal Diubah " + e);
         }
@@ -471,7 +471,7 @@ public class Nilai extends javax.swing.JFrame {
                 dn_kode.requestFocus();
                 datatable();
                 dn_simpan.setVisible(true);
-                 autoKodeNilai();
+                autoKodeNilai();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(null, "Data gagal dihapus" + e);
             }

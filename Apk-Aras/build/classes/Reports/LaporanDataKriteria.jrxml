@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5057398-e8a2-4dac-b17a-c51dd99c3a88">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[select * from kriteria]]>
+	</queryString>
+	<field name="id_kriteria" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="kode_kriteria" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_kriteria" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipe_kriteria" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bobot_kriteria" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="151" y="0" width="525" height="79" uuid="7363ff8b-7055-40bd-a3f4-753ae53b1744"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P E M E R I N T A H  K O T A  B E K A S I
+SD NEGERI BINTARA JAYA IV
+Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
+Surel: bintarajayaiv@gmail.com]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="23" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="201" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="89a6fd69-0253-4fa5-9027-8aa8f4609d5f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[id_kriteria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="287" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="01016193-2638-44e2-a04d-820636e1757f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[kode_kriteria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="373" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="5ca2c29b-8474-4eca-af14-52bd1828aadc"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[nama_kriteria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="459" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a9d2a977-2ad8-40b8-ae6f-b913c514c4a6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[tipe_kriteria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="545" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ed73d80d-3748-4966-aa66-096a6324e80f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[bobot_kriteria]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="24" splitType="Stretch">
+			<textField>
+				<reportElement x="201" y="0" width="86" height="20" uuid="50f042ed-46dc-4411-8539-ae7445fc7708"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{id_kriteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="287" y="0" width="86" height="20" uuid="d089164d-c379-45bb-8946-dd1b38c20b03"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode_kriteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="373" y="0" width="86" height="20" uuid="76f4c72e-26bc-4001-87d8-93baede10218"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_kriteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="459" y="0" width="86" height="20" uuid="c1d8c978-fa0b-4aa7-9a23-c5698844e34f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tipe_kriteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="545" y="0" width="86" height="20" uuid="10fe4663-d6ab-4d2e-a443-383f15d761fd"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{bobot_kriteria}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="123" splitType="Stretch">
+			<staticText>
+				<reportElement x="593" y="0" width="38" height="20" uuid="9f864a6e-cecd-4d11-918a-4960c7c989c0"/>
+				<text><![CDATA[Bekasi,]]></text>
+			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="631" y="0" width="100" height="20" uuid="651fd415-33f1-4a6e-832b-f8b425d5c1a0"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="631" y="31" width="84" height="20" uuid="c6dd2131-37f9-406b-9b0f-3d20b5f51255"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Kepala Sekolah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="642" y="103" width="73" height="20" uuid="197fd95b-a49d-4dbb-981a-c8bfd169ac53"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Mansur, M. Pd]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="34" splitType="Stretch">
+			<textField>
+				<reportElement x="702" y="14" width="100" height="20" uuid="4ebc180d-24a4-45d5-a186-e96f8b635e5d"/>
+				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

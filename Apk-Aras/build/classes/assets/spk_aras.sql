@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 16, 2025 at 10:01 AM
+-- Generation Time: Dec 18, 2025 at 08:22 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -51,14 +51,35 @@ INSERT INTO `alternatif` (`id_alternatif`, `kode_alternatif`, `nama_alternatif`)
 --
 
 CREATE TABLE `aras` (
-  `id_saw` int NOT NULL,
-  `id_siswa` int DEFAULT NULL,
+  `id_aras` int NOT NULL,
+  `id_alternatif` int DEFAULT NULL,
   `id_penilaian` int DEFAULT NULL,
   `id_kriteria` int DEFAULT NULL,
   `nilai_normalisasi` float DEFAULT NULL,
   `nilai_si` float DEFAULT NULL,
   `id_hasil` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `aras`
+--
+
+INSERT INTO `aras` (`id_aras`, `id_alternatif`, `id_penilaian`, `id_kriteria`, `nilai_normalisasi`, `nilai_si`, `id_hasil`) VALUES
+(351, 1, 1, 1, 0.193548, NULL, NULL),
+(352, 1, 2, 2, 0.18018, NULL, NULL),
+(353, 2, 3, 1, 0.210753, NULL, NULL),
+(354, 2, 4, 2, 0.207207, NULL, NULL),
+(355, 3, 5, 1, 0.172043, NULL, NULL),
+(356, 3, 6, 2, 0.198198, NULL, NULL),
+(357, 4, 7, 1, 0.165591, NULL, NULL),
+(358, 4, 9, 2, 0.0990991, NULL, NULL),
+(359, 5, 10, 1, 0.0473118, NULL, NULL),
+(360, 5, 11, 2, 0.108108, NULL, NULL),
+(361, 1, 15, 3, 0.0829384, NULL, NULL),
+(362, 2, 16, 3, 0.0995261, NULL, NULL),
+(363, 3, 17, 3, 0.0710901, NULL, NULL),
+(364, 4, 18, 3, 0.248815, NULL, NULL),
+(365, 5, 19, 3, 0.248815, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -68,7 +89,7 @@ CREATE TABLE `aras` (
 
 CREATE TABLE `hasil_akhir` (
   `id_hasil` int NOT NULL,
-  `id_siswa` int DEFAULT NULL,
+  `id_alternatif` int DEFAULT NULL,
   `nilai_ki` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -93,7 +114,7 @@ CREATE TABLE `kriteria` (
 INSERT INTO `kriteria` (`id_kriteria`, `kode_kriteria`, `nama_kriteria`, `tipe_kriteria`, `bobot_kriteria`) VALUES
 (1, 'C001', 'Partisipasi Siswa', 'Benefit', 0.2),
 (2, 'C002', 'Dukungan Guru', 'Benefit', 0.15),
-(3, 'C003', 'Dampak Karakter', 'Benefit', 0.25),
+(3, 'C003', 'Dampak Karakter', 'Cost', 0.25),
 (4, 'C004', 'Kemudahan Pelaksanaan', 'Benefit', 0.15),
 (5, 'C005', 'Dukungan Orang Tua', 'Benefit', 0.15),
 (6, 'C006', 'Keberlanjutan Program', 'Benefit', 0.1);
@@ -126,7 +147,12 @@ INSERT INTO `nilai_alternatif` (`id_penilaian`, `kode`, `id_alternatif`, `id_kri
 (7, 'N007', 4, 1, 77),
 (9, 'N008', 4, 2, 11),
 (10, 'N009', 5, 1, 22),
-(11, 'N010', 5, 2, 12);
+(11, 'N010', 5, 2, 12),
+(15, 'N011', 1, 3, 6),
+(16, 'N012', 2, 3, 5),
+(17, 'N013', 3, 3, 7),
+(18, 'N014', 4, 3, 2),
+(19, 'N015', 5, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -136,8 +162,18 @@ INSERT INTO `nilai_alternatif` (`id_penilaian`, `kode`, `id_alternatif`, `id_kri
 
 CREATE TABLE `solusi_ideal` (
   `id_kriteria` int NOT NULL,
-  `nilai_a0` float DEFAULT NULL
+  `nilai_a0` float DEFAULT NULL,
+  `a0_ternormalisasi` double DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `solusi_ideal`
+--
+
+INSERT INTO `solusi_ideal` (`id_kriteria`, `nilai_a0`, `a0_ternormalisasi`) VALUES
+(1, 98, 0.210752688172043),
+(2, 23, 0.2072072072072072),
+(3, 2, 0.24881516587677727);
 
 -- --------------------------------------------------------
 
@@ -173,8 +209,8 @@ ALTER TABLE `alternatif`
 -- Indexes for table `aras`
 --
 ALTER TABLE `aras`
-  ADD PRIMARY KEY (`id_saw`),
-  ADD KEY `fk_aras_siswa` (`id_siswa`),
+  ADD PRIMARY KEY (`id_aras`),
+  ADD KEY `fk_aras_siswa` (`id_alternatif`),
   ADD KEY `fk_aras_penilaian` (`id_penilaian`),
   ADD KEY `fk_aras_kriteria` (`id_kriteria`),
   ADD KEY `fk_aras_hasil` (`id_hasil`);
@@ -184,7 +220,7 @@ ALTER TABLE `aras`
 --
 ALTER TABLE `hasil_akhir`
   ADD PRIMARY KEY (`id_hasil`),
-  ADD KEY `fk_hasil_akhir_alternatif` (`id_siswa`);
+  ADD KEY `fk_hasil_akhir_alternatif` (`id_alternatif`);
 
 --
 -- Indexes for table `kriteria`
@@ -226,7 +262,7 @@ ALTER TABLE `alternatif`
 -- AUTO_INCREMENT for table `aras`
 --
 ALTER TABLE `aras`
-  MODIFY `id_saw` int NOT NULL AUTO_INCREMENT;
+  MODIFY `id_aras` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=366;
 
 --
 -- AUTO_INCREMENT for table `hasil_akhir`
@@ -244,7 +280,7 @@ ALTER TABLE `kriteria`
 -- AUTO_INCREMENT for table `nilai_alternatif`
 --
 ALTER TABLE `nilai_alternatif`
-  MODIFY `id_penilaian` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_penilaian` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -263,13 +299,13 @@ ALTER TABLE `aras`
   ADD CONSTRAINT `fk_aras_hasil` FOREIGN KEY (`id_hasil`) REFERENCES `hasil_akhir` (`id_hasil`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_aras_kriteria` FOREIGN KEY (`id_kriteria`) REFERENCES `kriteria` (`id_kriteria`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `fk_aras_penilaian` FOREIGN KEY (`id_penilaian`) REFERENCES `nilai_alternatif` (`id_penilaian`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `fk_aras_siswa` FOREIGN KEY (`id_siswa`) REFERENCES `alternatif` (`id_alternatif`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_aras_siswa` FOREIGN KEY (`id_alternatif`) REFERENCES `alternatif` (`id_alternatif`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `hasil_akhir`
 --
 ALTER TABLE `hasil_akhir`
-  ADD CONSTRAINT `fk_hasil_akhir_alternatif` FOREIGN KEY (`id_siswa`) REFERENCES `alternatif` (`id_alternatif`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `fk_hasil_akhir_alternatif` FOREIGN KEY (`id_alternatif`) REFERENCES `alternatif` (`id_alternatif`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `nilai_alternatif`

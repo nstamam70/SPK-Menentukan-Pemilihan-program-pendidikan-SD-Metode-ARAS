@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="07349e89-6429-4516-a0cc-3da98e66fcdc">
+	<property name="ireport.zoom" value="1.4641000000000013"/>
+	<property name="ireport.x" value="107"/>
+	<property name="ireport.y" value="0"/>
+	<queryString language="SQL">
+		<![CDATA[SELECT n.kode, a.nama_alternatif, k.nama_kriteria, n.nilai 
+                FROM nilai_alternatif n
+                JOIN alternatif a ON n.id_alternatif = a.id_alternatif 
+                JOIN kriteria k ON n.id_kriteria = k.id_kriteria;]]>
+	</queryString>
+	<field name="kode" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_alternatif" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nama_kriteria" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="nilai" class="java.lang.Float">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="114" y="0" width="525" height="79" uuid="eaa5d6bf-eb29-4aea-a0fa-a323064139c6"/>
+				<textElement textAlignment="Center">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[P E M E R I N T A H  K O T A  B E K A S I
+SD NEGERI BINTARA JAYA IV
+Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
+Surel: bintarajayaiv@gmail.com]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="24" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="150" y="0" width="112" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="8a397a63-70a4-4a25-bf0c-02257d159d13"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Kode]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="262" y="0" width="112" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="d4773c55-ef2b-468b-8d68-066a1ad8eb98"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Alternatif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="374" y="0" width="112" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="64e4039b-3c3a-47c3-9ba3-630728753054"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nama Kriteria]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="486" y="0" width="112" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="26d9700b-f170-4f36-8132-6cc973a65d6e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[Nilai]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="35" splitType="Stretch">
+			<textField>
+				<reportElement mode="Transparent" x="150" y="1" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="294cff97-105b-4850-9187-c840c2a5202f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kode}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="262" y="1" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="b70bfbe0-8ee0-49c1-b64b-ea064bb2ddc5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_alternatif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="374" y="1" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="ff31f5b0-bb5b-419c-b9e3-a530e37c3c38"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama_kriteria}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Transparent" x="486" y="1" width="112" height="20" forecolor="#000000" backcolor="#FFFFFF" uuid="5cf307a0-5399-4016-9cbc-5c7deb479c30"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nilai}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

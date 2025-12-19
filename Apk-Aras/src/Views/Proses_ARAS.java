@@ -81,7 +81,6 @@ public class Proses_ARAS extends javax.swing.JFrame {
 //            JOptionPane.showMessageDialog(null, "Gagal tampil Tabel X Dinamis: " + e.getMessage());
 //        }
 //    }
-
     private void tampilMatriks() {
         try {
             List<String> kriteriaList = new ArrayList<>();
@@ -180,46 +179,45 @@ public class Proses_ARAS extends javax.swing.JFrame {
                     "Gagal menampilkan solusi ideal: " + e.getMessage());
         }
     }
-    
-   private void tampilTabelSolusiIdealTernormalisasi() {
-    try {
-        DefaultTableModel model = new DefaultTableModel();
-        model.addColumn("Nama Kriteria");
-        model.addColumn("Tipe");
-        model.addColumn("A0 Ternormalisasi");
 
-        a0_normalisasi.setModel(model);
+    private void tampilTabelSolusiIdealTernormalisasi() {
+        try {
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Nama Kriteria");
+            model.addColumn("Tipe");
+            model.addColumn("A0 Ternormalisasi");
 
-        DecimalFormat df = new DecimalFormat("#0.0000");
+            a0_normalisasi.setModel(model);
 
-        String sql =
-            "SELECT k.nama_kriteria, k.tipe_kriteria, s.a0_ternormalisasi " +
-            "FROM solusi_ideal s " +
-            "JOIN kriteria k ON k.id_kriteria = s.id_kriteria " +
-            "ORDER BY k.id_kriteria";
+            DecimalFormat df = new DecimalFormat("#0.0000");
 
-        Statement st = conn.createStatement();
-        ResultSet rs = st.executeQuery(sql);
+            String sql
+                    = "SELECT k.nama_kriteria, k.tipe_kriteria, s.a0_ternormalisasi "
+                    + "FROM solusi_ideal s "
+                    + "JOIN kriteria k ON k.id_kriteria = s.id_kriteria "
+                    + "ORDER BY k.id_kriteria";
 
-        while (rs.next()) {
-            model.addRow(new Object[]{
-                rs.getString("nama_kriteria"),
-                rs.getString("tipe_kriteria"),
-                df.format(rs.getDouble("a0_ternormalisasi"))
-            });
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+
+            while (rs.next()) {
+                model.addRow(new Object[]{
+                    rs.getString("nama_kriteria"),
+                    rs.getString("tipe_kriteria"),
+                    df.format(rs.getDouble("a0_ternormalisasi"))
+                });
+            }
+
+            rs.close();
+            st.close();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Gagal menampilkan solusi ideal: " + e.getMessage()
+            );
         }
-
-        rs.close();
-        st.close();
-
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-            this,
-            "Gagal menampilkan solusi ideal: " + e.getMessage()
-        );
     }
-}
-
 
     private void tampilTabelNormalisasi() {
         try {
@@ -804,7 +802,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
     }//GEN-LAST:event_aras_normalisasiActionPerformed
 
     private void a0ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_a0ActionPerformed
-tampilTabelSolusiIdealTernormalisasi();
+        tampilTabelSolusiIdealTernormalisasi();
     }//GEN-LAST:event_a0ActionPerformed
 
     private void saw_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saw_simpanActionPerformed
@@ -845,10 +843,141 @@ tampilTabelSolusiIdealTernormalisasi();
 
     private void SiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SiActionPerformed
         // TODO add your handling code here:
+        try {
+            // 1. Bersihkan nilai Si sebelumnya
+            Statement stClear = conn.createStatement();
+            stClear.executeUpdate("UPDATE aras SET nilai_si = NULL");
+
+            // 2. Hitung Si = Σ (rij * bobot)
+            String sqlSi
+                    = "SELECT ar.id_alternatif, SUM(ar.nilai_normalisasi * k.bobot_kriteria) AS nilai_si "
+                    + "FROM aras ar "
+                    + "JOIN kriteria k ON k.id_kriteria = ar.id_kriteria "
+                    + "GROUP BY ar.id_alternatif";
+
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(sqlSi);
+
+            // 3. Simpan Si ke tabel ARAS
+            PreparedStatement ps = conn.prepareStatement(
+                    "UPDATE aras SET nilai_si = ? WHERE id_alternatif = ?"
+            );
+
+            Map<Integer, Double> nilaiSiMap = new LinkedHashMap<>();
+
+            while (rs.next()) {
+                int idAlt = rs.getInt("id_alternatif");
+                double si = rs.getDouble("nilai_si");
+
+                nilaiSiMap.put(idAlt, si);
+
+                ps.setDouble(1, si);
+                ps.setInt(2, idAlt);
+                ps.executeUpdate();
+            }
+
+            // 4. Tampilkan ke tabel Si
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Alternatif");
+            model.addColumn("Nilai Si");
+
+            tableSi.setModel(model);
+
+            String sqlNama
+                    = "SELECT DISTINCT a.id_alternatif, a.nama_alternatif, ar.nilai_si "
+                    + "FROM aras ar JOIN alternatif a ON a.id_alternatif = ar.id_alternatif "
+                    + "GROUP BY a.id_alternatif, a.nama_alternatif, ar.nilai_si "
+                    + "ORDER BY ar.nilai_si DESC";
+
+            ResultSet rsT = st.executeQuery(sqlNama);
+
+            while (rsT.next()) {
+                model.addRow(new Object[]{
+                    rsT.getString("nama_alternatif"),
+                    String.format("%.4f", rsT.getDouble("nilai_si"))
+                });
+            }
+
+            JOptionPane.showMessageDialog(this, "Perhitungan Si berhasil");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error Si: " + e.getMessage());
+        }
     }//GEN-LAST:event_SiActionPerformed
 
     private void KiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KiActionPerformed
         // TODO add your handling code here:
+        try {
+            // 1. Ambil nilai S0 (Si milik A0)
+            String sqlS0
+                    = "SELECT SUM(a0_ternormalisasi * k.bobot_kriteria) AS s0 "
+                    + "FROM solusi_ideal s JOIN kriteria k ON k.id_kriteria = s.id_kriteria";
+
+            Statement st = conn.createStatement();
+            ResultSet rsS0 = st.executeQuery(sqlS0);
+
+            double s0 = 0;
+            if (rsS0.next()) {
+                s0 = rsS0.getDouble("s0");
+            }
+
+            if (s0 == 0) {
+                JOptionPane.showMessageDialog(this, "Nilai S0 = 0, hitung Si dulu!");
+                return;
+            }
+
+            // 2. Bersihkan hasil akhir
+            st.executeUpdate("DELETE FROM hasil_akhir");
+
+            // 3. Hitung Ki dan simpan
+            String sqlKi
+                    = "SELECT DISTINCT id_alternatif, nilai_si FROM aras";
+
+            ResultSet rs = st.executeQuery(sqlKi);
+
+            PreparedStatement ps = conn.prepareStatement(
+                    "INSERT INTO hasil_akhir (id_alternatif, nilai_ki) VALUES (?, ?)"
+            );
+
+            while (rs.next()) {
+                int idAlt = rs.getInt("id_alternatif");
+                double si = rs.getDouble("nilai_si");
+                double ki = si / s0;
+
+                ps.setInt(1, idAlt);
+                ps.setDouble(2, ki);
+                ps.executeUpdate();
+            }
+
+            // 4. Tampilkan ranking
+            DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Alternatif");
+            model.addColumn("Nilai Ki");
+            model.addColumn("Ranking");
+
+            tablePrefrensi.setModel(model);
+
+            String sqlRank
+                    = "SELECT a.nama_alternatif, h.nilai_ki "
+                    + "FROM hasil_akhir h JOIN alternatif a ON a.id_alternatif = h.id_alternatif "
+                    + "ORDER BY h.nilai_ki DESC";
+
+            ResultSet rsR = st.executeQuery(sqlRank);
+
+            int rank = 1;
+            while (rsR.next()) {
+                model.addRow(new Object[]{
+                    rsR.getString("nama_alternatif"),
+                    String.format("%.4f", rsR.getDouble("nilai_ki")),
+                    rank++
+                });
+            }
+
+            JOptionPane.showMessageDialog(this, "Perhitungan Ki & Ranking berhasil");
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error Ki: " + e.getMessage());
+        }
     }//GEN-LAST:event_KiActionPerformed
 
     /**
