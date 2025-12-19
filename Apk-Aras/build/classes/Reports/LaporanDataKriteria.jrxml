@@ -46,27 +46,27 @@ Surel: bintarajayaiv@gmail.com]]></text>
 			<staticText>
 				<reportElement mode="Opaque" x="201" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="89a6fd69-0253-4fa5-9027-8aa8f4609d5f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[id_kriteria]]></text>
+				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="287" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="01016193-2638-44e2-a04d-820636e1757f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[kode_kriteria]]></text>
+				<text><![CDATA[Kode Kriteria]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="373" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="5ca2c29b-8474-4eca-af14-52bd1828aadc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[nama_kriteria]]></text>
+				<text><![CDATA[Nama Kriteria]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="459" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a9d2a977-2ad8-40b8-ae6f-b913c514c4a6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[tipe_kriteria]]></text>
+				<text><![CDATA[Tipe Kriteria]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="545" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ed73d80d-3748-4966-aa66-096a6324e80f"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[bobot_kriteria]]></text>
+				<text><![CDATA[Bobot Kriteria]]></text>
 			</staticText>
 		</band>
 	</columnHeader>

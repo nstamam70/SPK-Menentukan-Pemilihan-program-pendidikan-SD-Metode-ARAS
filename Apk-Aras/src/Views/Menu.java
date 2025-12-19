@@ -27,6 +27,7 @@ public class Menu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        background1 = new bg.background();
         jMenuBar1 = new javax.swing.JMenuBar();
         Data = new javax.swing.JMenu();
         datasiswa = new javax.swing.JMenuItem();
@@ -34,11 +35,23 @@ public class Menu extends javax.swing.JFrame {
         datanilai = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         penilaian = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        MenuLaporan = new javax.swing.JMenu();
+        MenuLaporan1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout background1Layout = new javax.swing.GroupLayout(background1);
+        background1.setLayout(background1Layout);
+        background1Layout.setHorizontalGroup(
+            background1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 564, Short.MAX_VALUE)
+        );
+        background1Layout.setVerticalGroup(
+            background1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 513, Short.MAX_VALUE)
+        );
 
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
 
@@ -87,9 +100,18 @@ public class Menu extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu2);
 
-        jMenu3.setText("Laporan");
-        jMenu3.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
-        jMenuBar1.add(jMenu3);
+        MenuLaporan.setText("Laporan");
+        MenuLaporan.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+
+        MenuLaporan1.setText("Menu Laporan");
+        MenuLaporan1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                MenuLaporan1ActionPerformed(evt);
+            }
+        });
+        MenuLaporan.add(MenuLaporan1);
+
+        jMenuBar1.add(MenuLaporan);
 
         jMenu4.setText("Pengaturan");
         jMenu4.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
@@ -111,11 +133,11 @@ public class Menu extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1033, Short.MAX_VALUE)
+            .addComponent(background1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 593, Short.MAX_VALUE)
+            .addComponent(background1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -148,6 +170,12 @@ public class Menu extends javax.swing.JFrame {
         new Proses_ARAS().setVisible(true);
         dispose();
     }//GEN-LAST:event_penilaianActionPerformed
+
+    private void MenuLaporan1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MenuLaporan1ActionPerformed
+        // TODO add your handling code here:
+        new Laporan().setVisible(true);
+        dispose();
+    }//GEN-LAST:event_MenuLaporan1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -186,11 +214,13 @@ public class Menu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu Data;
+    private javax.swing.JMenu MenuLaporan;
+    private javax.swing.JMenuItem MenuLaporan1;
+    private bg.background background1;
     private javax.swing.JMenuItem datakriteria;
     private javax.swing.JMenuItem datanilai;
     private javax.swing.JMenuItem datasiswa;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem4;
