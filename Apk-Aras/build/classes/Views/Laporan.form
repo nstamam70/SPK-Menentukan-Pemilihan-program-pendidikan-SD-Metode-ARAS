@@ -89,7 +89,7 @@
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
                           <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="lp_datasiswa" pref="368" max="32767" attributes="0"/>
+                              <Component id="lp_dataalternatif" pref="368" max="32767" attributes="0"/>
                               <Component id="lp_nilai" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -112,13 +112,13 @@
               <Group type="102" attributes="0">
                   <EmptySpace min="-2" pref="67" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="lp_datasiswa" min="-2" pref="208" max="-2" attributes="0"/>
+                      <Component id="lp_dataalternatif" min="-2" pref="208" max="-2" attributes="0"/>
                       <Component id="lp_datakriteria" min="-2" pref="208" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="lp_perangkingan" alignment="3" min="-2" pref="208" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lp_nilai" alignment="0" min="-2" pref="208" max="-2" attributes="0"/>
+                      <Component id="lp_perangkingan" min="-2" pref="208" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   <Component id="lp_kembali" min="-2" pref="58" max="-2" attributes="0"/>
@@ -167,7 +167,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lp_perangkinganActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="lp_datasiswa">
+        <Component class="javax.swing.JButton" name="lp_dataalternatif">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
@@ -178,7 +178,7 @@
             <Property name="text" type="java.lang.String" value="Laporan Data Alternatif"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lp_datasiswaActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lp_dataalternatifActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="lp_nilai">

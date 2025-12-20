@@ -46,11 +46,11 @@ public class Menu extends javax.swing.JFrame {
         background1.setLayout(background1Layout);
         background1Layout.setHorizontalGroup(
             background1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 564, Short.MAX_VALUE)
+            .addGap(0, 931, Short.MAX_VALUE)
         );
         background1Layout.setVerticalGroup(
             background1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 513, Short.MAX_VALUE)
+            .addGap(0, 647, Short.MAX_VALUE)
         );
 
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
@@ -90,6 +90,7 @@ public class Menu extends javax.swing.JFrame {
         jMenu2.setText("Penilaian");
         jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
+        penilaian.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         penilaian.setText("Proses Perhitungan");
         penilaian.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -103,6 +104,7 @@ public class Menu extends javax.swing.JFrame {
         MenuLaporan.setText("Laporan");
         MenuLaporan.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
 
+        MenuLaporan1.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         MenuLaporan1.setText("Menu Laporan");
         MenuLaporan1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

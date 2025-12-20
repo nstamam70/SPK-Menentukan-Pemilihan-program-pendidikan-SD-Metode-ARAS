@@ -4,21 +4,18 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<queryString>
-		<![CDATA[select * from kriteria]]>
+		<![CDATA[SELECT 
+    a.nama_alternatif,
+    h.nilai_ki
+FROM hasil_akhir h
+JOIN alternatif a 
+    ON a.id_alternatif = h.id_alternatif
+ORDER BY h.nilai_ki DESC;]]>
 	</queryString>
-	<field name="id_kriteria" class="java.lang.Integer">
+	<field name="nama_alternatif" class="java.lang.String">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
-	<field name="kode_kriteria" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="nama_kriteria" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="tipe_kriteria" class="java.lang.String">
-		<fieldDescription><![CDATA[]]></fieldDescription>
-	</field>
-	<field name="bobot_kriteria" class="java.lang.Float">
+	<field name="nilai_ki" class="java.lang.Float">
 		<fieldDescription><![CDATA[]]></fieldDescription>
 	</field>
 	<background>
@@ -64,11 +61,11 @@
 	<pageHeader>
 		<band height="35" splitType="Stretch">
 			<staticText>
-				<reportElement x="240" y="15" width="100" height="20" uuid="5aa77140-f6c1-4a1d-a880-42dadcc70df9"/>
+				<reportElement x="208" y="15" width="138" height="20" uuid="5aa77140-f6c1-4a1d-a880-42dadcc70df9"/>
 				<textElement textAlignment="Center">
 					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Data Kriteria]]></text>
+				<text><![CDATA[Data Perangkingan]]></text>
 			</staticText>
 		</band>
 	</pageHeader>
@@ -79,7 +76,7 @@
 				<textElement>
 					<font fontName="SansSerif"/>
 				</textElement>
-				<text><![CDATA[Tanggal]]></text>
+				<text><![CDATA[Tanggal :]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
 				<reportElement x="455" y="0" width="100" height="20" uuid="c5975af3-b282-41e8-9ad3-e2dbccccaae0"/>
@@ -89,18 +86,18 @@
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="50" y="41" width="104" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="2910036f-3cd5-494f-bd1d-ac3931189b16"/>
+				<reportElement mode="Opaque" x="50" y="41" width="177" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="2910036f-3cd5-494f-bd1d-ac3931189b16"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
-				<text><![CDATA[Kode Kriteria]]></text>
+				<text><![CDATA[Nama Alternatif]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="154" y="41" width="145" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="25e26f44-50af-45de-8245-c0a3cac1494b"/>
+				<reportElement mode="Opaque" x="227" y="41" width="183" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="25e26f44-50af-45de-8245-c0a3cac1494b"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
-				<text><![CDATA[Nama Kriteria]]></text>
+				<text><![CDATA[Skor Akhir]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="0" y="41" width="50" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="fbf0183c-ba64-4b1b-8c34-a1d0f5ac1e17"/>
@@ -110,36 +107,29 @@
 				<text><![CDATA[No]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="299" y="41" width="145" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ea70911e-5867-4acb-83d9-94e6358e90c0"/>
+				<reportElement mode="Opaque" x="410" y="41" width="145" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ea70911e-5867-4acb-83d9-94e6358e90c0"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman" size="12"/>
 				</textElement>
-				<text><![CDATA[Tipe Kriteria]]></text>
-			</staticText>
-			<staticText>
-				<reportElement mode="Opaque" x="444" y="41" width="111" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a2dff4b7-b80d-4196-8043-0420ecaae72f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman" size="12"/>
-				</textElement>
-				<text><![CDATA[Bobot Kriteria]]></text>
+				<text><![CDATA[Rank]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="50" y="0" width="104" height="20" uuid="e353f8ac-0017-4490-a519-00f0ca487da1"/>
+				<reportElement x="50" y="0" width="177" height="20" uuid="e353f8ac-0017-4490-a519-00f0ca487da1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{kode_kriteria}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama_alternatif}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="154" y="0" width="145" height="20" uuid="d7b0dd3c-e4b3-4e0a-b081-a4054778c52c"/>
+				<reportElement x="227" y="0" width="183" height="20" uuid="d7b0dd3c-e4b3-4e0a-b081-a4054778c52c"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{nama_kriteria}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nilai_ki}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement x="0" y="0" width="50" height="20" uuid="63cf76d6-c6ea-4005-8da8-653f4c8eade5"/>
@@ -147,18 +137,11 @@
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="299" y="0" width="145" height="20" uuid="e355419c-3670-4c64-97a6-83f30b6235ea"/>
+				<reportElement x="410" y="0" width="145" height="20" uuid="e355419c-3670-4c64-97a6-83f30b6235ea"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="Times New Roman"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{tipe_kriteria}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="444" y="0" width="111" height="20" uuid="c381e93f-4f4b-4db6-84b4-82c056f58270"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Times New Roman"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{bobot_kriteria}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

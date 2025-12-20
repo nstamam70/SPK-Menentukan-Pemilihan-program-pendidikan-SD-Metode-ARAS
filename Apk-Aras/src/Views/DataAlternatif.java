@@ -78,6 +78,7 @@ public class DataAlternatif extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()) {
                 String kode = rs.getString(1);
+                ds_kode.setEnabled(false);
                 if (kode == null) {
                     ds_kode.setText("A001");
                 } else {
@@ -249,13 +250,20 @@ public class DataAlternatif extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(59, 59, 59)
+            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addComponent(jLabel7)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ds_cari, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(ds_simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -268,13 +276,6 @@ public class DataAlternatif extends javax.swing.JFrame {
                         .addComponent(ds_kode, javax.swing.GroupLayout.DEFAULT_SIZE, 827, Short.MAX_VALUE)
                         .addComponent(ds_nama)))
                 .addGap(22, 22, 22))
-            .addComponent(jScrollPane1)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(53, 53, 53)
-                .addComponent(jLabel7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 67, Short.MAX_VALUE)
-                .addComponent(ds_cari, javax.swing.GroupLayout.PREFERRED_SIZE, 827, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -293,11 +294,11 @@ public class DataAlternatif extends javax.swing.JFrame {
                     .addComponent(ds_ubah, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ds_hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ds_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(ds_cari, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(24, 24, 24)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7)
+                    .addComponent(ds_cari, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(25, 25, 25)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0))
         );
@@ -309,6 +310,7 @@ public class DataAlternatif extends javax.swing.JFrame {
 
     private void ds_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_kembaliActionPerformed
         new Menu().setVisible(true);
+        ds_simpan.setVisible(true);
         dispose();
     }//GEN-LAST:event_ds_kembaliActionPerformed
 
@@ -331,6 +333,7 @@ public class DataAlternatif extends javax.swing.JFrame {
 
                 datatable();
                 clear();
+                ds_simpan.setVisible(true);
                 autoKodeAlternatif();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Gagal hapus data: " + e.getMessage());
@@ -350,6 +353,7 @@ public class DataAlternatif extends javax.swing.JFrame {
 
             datatable();
             clear();
+            ds_simpan.setVisible(true);
             autoKodeAlternatif();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Gagal ubah data: " + e.getMessage());
@@ -382,6 +386,8 @@ public class DataAlternatif extends javax.swing.JFrame {
         int bar = tablealternatif.getSelectedRow();
         ds_kode.setText(tabmode.getValueAt(bar, 0).toString());
         ds_nama.setText(tabmode.getValueAt(bar, 1).toString());
+
+        ds_simpan.setVisible(false);
     }//GEN-LAST:event_tablealternatifMouseClicked
 
     private void ds_kodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ds_kodeActionPerformed

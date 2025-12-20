@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="df352d65-a132-40b1-a85f-0e11226b06cc">
-	<property name="ireport.zoom" value="1.3310000000000004"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="441683ee-c534-4f28-9086-88fcc2e5759f">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[select * from alternatif]]>
 	</queryString>
 	<field name="id_alternatif" class="java.lang.Integer">
@@ -21,83 +21,152 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="136" y="0" width="525" height="79" uuid="b4e176ee-4356-4c61-a3ab-c45b200c9ea4"/>
+				<reportElement x="138" y="40" width="278" height="20" uuid="c6b45ba4-f243-4570-8a0c-5b37c8a7283c"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="1" width="300" height="36" forecolor="#000000" uuid="ce1bd47d-df20-4dae-b185-756b1d0216c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SD NEGERI BINTARA JAYA IV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="0" width="278" height="20" forecolor="#000000" uuid="c4987ab9-2f4d-484b-a0f2-c3ddd6b93861"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[P E M E R I N T A H  K O T A  B E K A S I
-SD NEGERI BINTARA JAYA IV
-Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
-Surel: bintarajayaiv@gmail.com]]></text>
+]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="99" y="56" width="356" height="19" uuid="0a6533fe-cbc2-44a4-b7ef-89985fa75beb"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Surel: bintarajayaiv@gmail.com]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="78" width="555" height="1" uuid="8c1e2e31-27b3-4775-986f-e6d613d5bcca"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="15" width="100" height="20" uuid="5aa77140-f6c1-4a1d-a880-42dadcc70df9"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Alternatif]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="21" splitType="Stretch">
+		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="250" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="3b7d7b36-b252-4166-ab4e-4566b37a05ea"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[Id]]></text>
+				<reportElement x="407" y="0" width="48" height="20" uuid="60c072ff-48c6-4402-959d-8dea9f336cc5"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
 			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="0" width="100" height="20" uuid="c5975af3-b282-41e8-9ad3-e2dbccccaae0"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="360" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="0b249854-63d3-4826-96d8-5986b5dda16f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="50" y="41" width="205" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="2910036f-3cd5-494f-bd1d-ac3931189b16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Kode Alternatif]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="470" y="0" width="110" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="5d609fe5-f135-4426-85d1-d3b1c9edc852"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="255" y="41" width="300" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="25e26f44-50af-45de-8245-c0a3cac1494b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Nama Alternatif]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="41" width="50" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="fbf0183c-ba64-4b1b-8c34-a1d0f5ac1e17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="23" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="250" y="0" width="110" height="20" uuid="ac78a21c-e768-4741-ac50-0a42718a615e"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{id_alternatif}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="360" y="0" width="110" height="20" uuid="f32e36ab-213d-4491-b3b7-b113e082e107"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="50" y="0" width="205" height="20" uuid="e353f8ac-0017-4490-a519-00f0ca487da1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{kode_alternatif}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="470" y="0" width="110" height="20" uuid="1fecc194-7d77-4be9-8648-3eeab4817493"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="255" y="0" width="300" height="20" uuid="d7b0dd3c-e4b3-4e0a-b081-a4054778c52c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_alternatif}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="0" width="50" height="20" uuid="63cf76d6-c6ea-4005-8da8-653f4c8eade5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="114" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="651" y="31" width="73" height="20" uuid="ec70bf5d-0b21-4353-bc69-6f113097db5f"/>
-				<text><![CDATA[Kepala Sekolah]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="640" y="94" width="100" height="20" uuid="101fcad5-3d0d-4a97-b980-decd0dc398cb"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="401" y="99" width="131" height="20" uuid="4d9712cc-3903-412f-98cb-06c4fc6cb692"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
 				<text><![CDATA[Mansur, M. Pd]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="602" y="0" width="38" height="20" uuid="a42f40ea-c71e-4965-b6de-48e7adf3513e"/>
+				<reportElement x="401" y="20" width="132" height="20" uuid="9bae1295-5776-44c3-ae95-78145c514362"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[Kepala Sekolah]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="401" y="0" width="37" height="20" uuid="f2bdb03b-0907-4ccd-b05c-a786601857a6"/>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
 				<text><![CDATA[Bekasi,]]></text>
 			</staticText>
 			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="640" y="0" width="100" height="20" uuid="d2af2088-520e-49c0-836b-c74080911bf4"/>
+				<reportElement x="442" y="0" width="100" height="20" uuid="0f2bcc51-9dae-4a51-9993-acf79597d674"/>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="24" splitType="Stretch">
-			<textField>
-				<reportElement x="702" y="4" width="100" height="20" uuid="a639f178-8085-4817-9936-169b84d080fc"/>
+		<band height="54" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="227" y="34" width="100" height="20" uuid="744b6b98-5d74-4123-bbbb-1dd51d0d9646"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>

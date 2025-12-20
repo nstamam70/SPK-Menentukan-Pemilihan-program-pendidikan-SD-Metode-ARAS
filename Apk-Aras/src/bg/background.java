@@ -19,7 +19,7 @@ public class background extends JPanel{
     private Image image;
     
     public background(){
-        image = new ImageIcon(getClass().getResource("/assets/Logo.png")).getImage();
+        image = new ImageIcon(getClass().getResource("/assets/bg.png")).getImage();
     }
     
     @Override

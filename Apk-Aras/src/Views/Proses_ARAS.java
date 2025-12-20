@@ -37,50 +37,6 @@ public class Proses_ARAS extends javax.swing.JFrame {
 
     }
 
-//    private void tampilTabelX() {
-//        try {
-//   
-//            List<String> kriteriaList = new ArrayList<>();
-//            Statement stKriteria = conn.createStatement();
-//            ResultSet rsKriteria = stKriteria.executeQuery("SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
-//
-//            StringBuilder sqlSelect = new StringBuilder("SELECT a.nama_alternatif");
-//            while (rsKriteria.next()) {
-//                int idKriteria = rsKriteria.getInt("id_kriteria");
-//                String namaKriteria = rsKriteria.getString("nama_kriteria");
-//                kriteriaList.add(namaKriteria);
-//
-//              
-//                sqlSelect.append(", MAX(CASE WHEN n.id_kriteria = ").append(idKriteria)
-//                        .append(" THEN n.nilai END) AS `").append(namaKriteria).append("`");
-//            }
-//            sqlSelect.append(" FROM nilai_alternatif n JOIN alternatif a ON n.id_alternatif = a.id_alternatif GROUP BY a.nama_alternatif");
-//
-//        
-//            List<String> kolomHeader = new ArrayList<>();
-//            kolomHeader.add("Nama Alternatif");
-//            kolomHeader.addAll(kriteriaList);
-//
-//            DefaultTableModel model = new DefaultTableModel(null, kolomHeader.toArray());
-//            tableX.setModel(model);
-//
-//        
-//            Statement st = conn.createStatement();
-//            ResultSet rs = st.executeQuery(sqlSelect.toString());
-//
-//            while (rs.next()) {
-//                List<Object> dataRow = new ArrayList<>();
-//                dataRow.add(rs.getString("nama_alternatif"));
-//                for (String kriteria : kriteriaList) {
-//                    dataRow.add(rs.getObject(kriteria)); 
-//                }
-//                model.addRow(dataRow.toArray());
-//            }
-//
-//        } catch (Exception e) {
-//            JOptionPane.showMessageDialog(null, "Gagal tampil Tabel X Dinamis: " + e.getMessage());
-//        }
-//    }
     private void tampilMatriks() {
         try {
             List<String> kriteriaList = new ArrayList<>();
@@ -219,68 +175,6 @@ public class Proses_ARAS extends javax.swing.JFrame {
         }
     }
 
-    private void tampilTabelNormalisasi() {
-        try {
-            // Formatter 4 angka di belakang koma
-            DecimalFormat df = new DecimalFormat("#.####");
-
-            // 1. Ambil daftar kriteria
-            List<Integer> idKriteriaList = new ArrayList<>();
-            List<String> namaKriteriaList = new ArrayList<>();
-
-            Statement stK = conn.createStatement();
-            ResultSet rsK = stK.executeQuery(
-                    "SELECT id_kriteria, nama_kriteria FROM kriteria ORDER BY id_kriteria");
-
-            StringBuilder sql = new StringBuilder("SELECT a.nama_alternatif");
-
-            while (rsK.next()) {
-                int id = rsK.getInt("id_kriteria");
-                String nama = rsK.getString("nama_kriteria");
-
-                idKriteriaList.add(id);
-                namaKriteriaList.add(nama);
-
-                sql.append(", MAX(CASE WHEN ar.id_kriteria = ")
-                        .append(id)
-                        .append(" THEN ar.nilai_normalisasi END) AS `")
-                        .append(nama).append("`");
-            }
-
-            sql.append(" FROM aras ar ")
-                    .append("JOIN alternatif a ON a.id_alternatif = ar.id_alternatif ")
-                    .append("GROUP BY a.nama_alternatif");
-
-            // 2. Header tabel
-            List<String> kolom = new ArrayList<>();
-            kolom.add("Alternatif");
-            kolom.addAll(namaKriteriaList);
-
-            DefaultTableModel model = new DefaultTableModel(null, kolom.toArray());
-            tabelnormalisasi.setModel(model);
-
-            // 3. Eksekusi query
-            Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery(sql.toString());
-
-            while (rs.next()) {
-                List<Object> row = new ArrayList<>();
-                row.add(rs.getString("nama_alternatif"));
-
-                for (String k : namaKriteriaList) {
-                    double nilai = rs.getDouble(k);
-                    row.add(df.format(nilai)); // ← PEMBULATAN DI SINI
-                }
-
-                model.addRow(row.toArray());
-            }
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this,
-                    "Gagal tampil normalisasi: " + e.getMessage());
-        }
-    }
-
     private void hitungDanTampilkanNormalisasiARAS() {
         try {
 
@@ -346,6 +240,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
            ================================ */
             Statement stClear = conn.createStatement();
             stClear.executeUpdate("DELETE FROM aras");
+            stClear.executeUpdate("ALTER TABLE aras AUTO_INCREMENT = 1");
 
             /* ================================
            4. Simpan normalisasi alternatif
@@ -405,7 +300,6 @@ public class Proses_ARAS extends javax.swing.JFrame {
 
             /* ================================
            6. TAMPILKAN TABEL NORMALISASI
-           (DIPERBAIKI, TANPA METHOD BARU)
            ================================ */
             List<String> kriteriaList = new ArrayList<>();
 
@@ -490,7 +384,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
         aras_normalisasi = new javax.swing.JButton();
         a0 = new javax.swing.JButton();
         tampilkan_matriks = new javax.swing.JButton();
-        saw_kembali = new javax.swing.JButton();
+        aras_kembali = new javax.swing.JButton();
         jScrollPane4 = new javax.swing.JScrollPane();
         tableSi = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
@@ -611,11 +505,11 @@ public class Proses_ARAS extends javax.swing.JFrame {
             }
         });
 
-        saw_kembali.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        saw_kembali.setText("Kembali");
-        saw_kembali.addActionListener(new java.awt.event.ActionListener() {
+        aras_kembali.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        aras_kembali.setText("Kembali");
+        aras_kembali.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saw_kembaliActionPerformed(evt);
+                aras_kembaliActionPerformed(evt);
             }
         });
 
@@ -731,7 +625,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(Ki, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(saw_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(aras_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 1064, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -773,7 +667,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tampilkan_matriks, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(a0, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(saw_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(aras_kembali, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hitung_a0, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(aras_normalisasi, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(Si, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -791,11 +685,11 @@ public class Proses_ARAS extends javax.swing.JFrame {
         tampilMatriks();
     }//GEN-LAST:event_tampilkan_matriksActionPerformed
 
-    private void saw_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saw_kembaliActionPerformed
+    private void aras_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aras_kembaliActionPerformed
         // TODO add your handling code here:
         new Menu().setVisible(true);
         dispose();
-    }//GEN-LAST:event_saw_kembaliActionPerformed
+    }//GEN-LAST:event_aras_kembaliActionPerformed
 
     private void aras_normalisasiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_aras_normalisasiActionPerformed
         hitungDanTampilkanNormalisasiARAS();
@@ -883,11 +777,13 @@ public class Proses_ARAS extends javax.swing.JFrame {
 
             tableSi.setModel(model);
 
+// POLA SAMA DENGAN tampilTabelNormalisasi()
             String sqlNama
-                    = "SELECT DISTINCT a.id_alternatif, a.nama_alternatif, ar.nilai_si "
-                    + "FROM aras ar JOIN alternatif a ON a.id_alternatif = ar.id_alternatif "
-                    + "GROUP BY a.id_alternatif, a.nama_alternatif, ar.nilai_si "
-                    + "ORDER BY ar.nilai_si DESC";
+                    = "SELECT a.nama_alternatif, MAX(ar.nilai_si) AS nilai_si "
+                    + "FROM aras ar "
+                    + "JOIN alternatif a ON a.id_alternatif = ar.id_alternatif "
+                    + "GROUP BY a.id_alternatif, a.nama_alternatif "
+                    + "ORDER BY a.id_alternatif";
 
             ResultSet rsT = st.executeQuery(sqlNama);
 
@@ -908,12 +804,16 @@ public class Proses_ARAS extends javax.swing.JFrame {
     private void KiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KiActionPerformed
         // TODO add your handling code here:
         try {
-            // 1. Ambil nilai S0 (Si milik A0)
-            String sqlS0
-                    = "SELECT SUM(a0_ternormalisasi * k.bobot_kriteria) AS s0 "
-                    + "FROM solusi_ideal s JOIN kriteria k ON k.id_kriteria = s.id_kriteria";
-
             Statement st = conn.createStatement();
+
+            /* ================================
+           1. Ambil nilai S0
+           ================================ */
+            String sqlS0
+                    = "SELECT SUM(s.a0_ternormalisasi * k.bobot_kriteria) AS s0 "
+                    + "FROM solusi_ideal s "
+                    + "JOIN kriteria k ON k.id_kriteria = s.id_kriteria";
+
             ResultSet rsS0 = st.executeQuery(sqlS0);
 
             double s0 = 0;
@@ -926,12 +826,19 @@ public class Proses_ARAS extends javax.swing.JFrame {
                 return;
             }
 
-            // 2. Bersihkan hasil akhir
+            /* ================================
+           2. Bersihkan hasil_akhir
+           ================================ */
             st.executeUpdate("DELETE FROM hasil_akhir");
+            st.executeUpdate("ALTER TABLE hasil_akhir AUTO_INCREMENT = 1");
 
-            // 3. Hitung Ki dan simpan
+            /* ================================
+           3. Hitung Ki
+           ================================ */
             String sqlKi
-                    = "SELECT DISTINCT id_alternatif, nilai_si FROM aras";
+                    = "SELECT id_alternatif, MAX(nilai_si) AS nilai_si "
+                    + "FROM aras "
+                    + "GROUP BY id_alternatif";
 
             ResultSet rs = st.executeQuery(sqlKi);
 
@@ -949,17 +856,20 @@ public class Proses_ARAS extends javax.swing.JFrame {
                 ps.executeUpdate();
             }
 
-            // 4. Tampilkan ranking
+            /* ================================
+           4. Tampilkan ranking
+           ================================ */
             DefaultTableModel model = new DefaultTableModel();
+            model.addColumn("Ranking");
             model.addColumn("Alternatif");
             model.addColumn("Nilai Ki");
-            model.addColumn("Ranking");
 
             tablePrefrensi.setModel(model);
 
             String sqlRank
                     = "SELECT a.nama_alternatif, h.nilai_ki "
-                    + "FROM hasil_akhir h JOIN alternatif a ON a.id_alternatif = h.id_alternatif "
+                    + "FROM hasil_akhir h "
+                    + "JOIN alternatif a ON a.id_alternatif = h.id_alternatif "
                     + "ORDER BY h.nilai_ki DESC";
 
             ResultSet rsR = st.executeQuery(sqlRank);
@@ -967,9 +877,9 @@ public class Proses_ARAS extends javax.swing.JFrame {
             int rank = 1;
             while (rsR.next()) {
                 model.addRow(new Object[]{
+                    rank++,
                     rsR.getString("nama_alternatif"),
-                    String.format("%.4f", rsR.getDouble("nilai_ki")),
-                    rank++
+                    String.format("%.4f", rsR.getDouble("nilai_ki"))
                 });
             }
 
@@ -1029,6 +939,7 @@ public class Proses_ARAS extends javax.swing.JFrame {
     private javax.swing.JButton Si;
     private javax.swing.JButton a0;
     private javax.swing.JTable a0_normalisasi;
+    private javax.swing.JButton aras_kembali;
     private javax.swing.JButton aras_normalisasi;
     private javax.swing.JButton hitung_a0;
     private javax.swing.JLabel jLabel1;
@@ -1046,7 +957,6 @@ public class Proses_ARAS extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JButton saw_kembali;
     private javax.swing.JTable tabelnormalisasi;
     private javax.swing.JTable tabelsolusiideal;
     private javax.swing.JTable tablePrefrensi;

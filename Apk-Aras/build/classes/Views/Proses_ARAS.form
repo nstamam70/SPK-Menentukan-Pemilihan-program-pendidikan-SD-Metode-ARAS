@@ -127,7 +127,7 @@
                                       <EmptySpace max="-2" attributes="0"/>
                                       <Component id="Ki" min="-2" pref="64" max="-2" attributes="0"/>
                                       <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="saw_kembali" min="-2" pref="115" max="-2" attributes="0"/>
+                                      <Component id="aras_kembali" min="-2" pref="115" max="-2" attributes="0"/>
                                   </Group>
                                   <Component id="jScrollPane3" min="-2" pref="1064" max="-2" attributes="0"/>
                               </Group>
@@ -181,7 +181,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="tampilkan_matriks" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                       <Component id="a0" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
-                      <Component id="saw_kembali" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
+                      <Component id="aras_kembali" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                       <Component id="hitung_a0" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                       <Component id="aras_normalisasi" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
                       <Component id="Si" alignment="3" min="-2" pref="54" max="-2" attributes="0"/>
@@ -322,7 +322,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="tampilkan_matriksActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="saw_kembali">
+        <Component class="javax.swing.JButton" name="aras_kembali">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="18" style="1"/>
@@ -330,7 +330,7 @@
             <Property name="text" type="java.lang.String" value="Kembali"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="saw_kembaliActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="aras_kembaliActionPerformed"/>
           </Events>
         </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane4">

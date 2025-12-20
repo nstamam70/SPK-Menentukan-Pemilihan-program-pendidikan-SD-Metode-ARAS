@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5057398-e8a2-4dac-b17a-c51dd99c3a88">
-	<property name="ireport.zoom" value="1.0"/>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="441683ee-c534-4f28-9086-88fcc2e5759f">
+	<property name="ireport.zoom" value="1.5"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
-	<queryString language="SQL">
+	<queryString>
 		<![CDATA[select * from kriteria]]>
 	</queryString>
 	<field name="id_kriteria" class="java.lang.Integer">
@@ -27,104 +27,180 @@
 	<title>
 		<band height="79" splitType="Stretch">
 			<staticText>
-				<reportElement x="151" y="0" width="525" height="79" uuid="7363ff8b-7055-40bd-a3f4-753ae53b1744"/>
+				<reportElement x="138" y="40" width="278" height="20" uuid="c6b45ba4-f243-4570-8a0c-5b37c8a7283c"/>
+				<textElement>
+					<font fontName="SansSerif" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
+]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="127" y="1" width="300" height="36" forecolor="#000000" uuid="ce1bd47d-df20-4dae-b185-756b1d0216c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SD NEGERI BINTARA JAYA IV]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="138" y="0" width="278" height="20" forecolor="#000000" uuid="c4987ab9-2f4d-484b-a0f2-c3ddd6b93861"/>
 				<textElement textAlignment="Center">
-					<font size="14" isBold="true"/>
+					<font fontName="SansSerif" size="14" isBold="true"/>
 				</textElement>
 				<text><![CDATA[P E M E R I N T A H  K O T A  B E K A S I
-SD NEGERI BINTARA JAYA IV
-Alamat : Jl. Bintara Jaya Raya Rt.05/03 Kel. Bintara Jaya Kec. Bekasi Barat
-Surel: bintarajayaiv@gmail.com]]></text>
+]]></text>
 			</staticText>
+			<staticText>
+				<reportElement x="99" y="56" width="356" height="19" uuid="0a6533fe-cbc2-44a4-b7ef-89985fa75beb"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Surel: bintarajayaiv@gmail.com]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="78" width="555" height="1" uuid="8c1e2e31-27b3-4775-986f-e6d613d5bcca"/>
+			</line>
 		</band>
 	</title>
 	<pageHeader>
-		<band height="35" splitType="Stretch"/>
+		<band height="35" splitType="Stretch">
+			<staticText>
+				<reportElement x="240" y="15" width="100" height="20" uuid="5aa77140-f6c1-4a1d-a880-42dadcc70df9"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Data Kriteria]]></text>
+			</staticText>
+		</band>
 	</pageHeader>
 	<columnHeader>
-		<band height="23" splitType="Stretch">
+		<band height="61" splitType="Stretch">
 			<staticText>
-				<reportElement mode="Opaque" x="201" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="89a6fd69-0253-4fa5-9027-8aa8f4609d5f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<text><![CDATA[No]]></text>
+				<reportElement x="407" y="0" width="48" height="20" uuid="60c072ff-48c6-4402-959d-8dea9f336cc5"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<text><![CDATA[Tanggal]]></text>
 			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="455" y="0" width="100" height="20" uuid="c5975af3-b282-41e8-9ad3-e2dbccccaae0"/>
+				<textElement>
+					<font fontName="SansSerif"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 			<staticText>
-				<reportElement mode="Opaque" x="287" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="01016193-2638-44e2-a04d-820636e1757f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="50" y="41" width="104" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="2910036f-3cd5-494f-bd1d-ac3931189b16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Kode Kriteria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="373" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="5ca2c29b-8474-4eca-af14-52bd1828aadc"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="154" y="41" width="145" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="25e26f44-50af-45de-8245-c0a3cac1494b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Nama Kriteria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="459" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a9d2a977-2ad8-40b8-ae6f-b913c514c4a6"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="0" y="41" width="50" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="fbf0183c-ba64-4b1b-8c34-a1d0f5ac1e17"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12" isUnderline="false"/>
+				</textElement>
+				<text><![CDATA[No]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="299" y="41" width="145" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ea70911e-5867-4acb-83d9-94e6358e90c0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Tipe Kriteria]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="545" y="0" width="86" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="ed73d80d-3748-4966-aa66-096a6324e80f"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement mode="Opaque" x="444" y="41" width="111" height="20" forecolor="#FFFFFF" backcolor="#000000" uuid="a2dff4b7-b80d-4196-8043-0420ecaae72f"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman" size="12"/>
+				</textElement>
 				<text><![CDATA[Bobot Kriteria]]></text>
 			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="24" splitType="Stretch">
+		<band height="20" splitType="Stretch">
 			<textField>
-				<reportElement x="201" y="0" width="86" height="20" uuid="50f042ed-46dc-4411-8539-ae7445fc7708"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
-				<textFieldExpression><![CDATA[$F{id_kriteria}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement x="287" y="0" width="86" height="20" uuid="d089164d-c379-45bb-8946-dd1b38c20b03"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="50" y="0" width="104" height="20" uuid="e353f8ac-0017-4490-a519-00f0ca487da1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{kode_kriteria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="373" y="0" width="86" height="20" uuid="76f4c72e-26bc-4001-87d8-93baede10218"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="154" y="0" width="145" height="20" uuid="d7b0dd3c-e4b3-4e0a-b081-a4054778c52c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_kriteria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="459" y="0" width="86" height="20" uuid="c1d8c978-fa0b-4aa7-9a23-c5698844e34f"/>
+				<reportElement x="0" y="0" width="50" height="20" uuid="63cf76d6-c6ea-4005-8da8-653f4c8eade5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="299" y="0" width="145" height="20" uuid="e355419c-3670-4c64-97a6-83f30b6235ea"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{tipe_kriteria}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="545" y="0" width="86" height="20" uuid="10fe4663-d6ab-4d2e-a443-383f15d761fd"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="444" y="0" width="111" height="20" uuid="c381e93f-4f4b-4db6-84b4-82c056f58270"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="Times New Roman"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$F{bobot_kriteria}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<columnFooter>
-		<band height="123" splitType="Stretch">
+		<band height="120" splitType="Stretch">
 			<staticText>
-				<reportElement x="593" y="0" width="38" height="20" uuid="9f864a6e-cecd-4d11-918a-4960c7c989c0"/>
-				<text><![CDATA[Bekasi,]]></text>
+				<reportElement x="401" y="99" width="131" height="20" uuid="4d9712cc-3903-412f-98cb-06c4fc6cb692"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[Mansur, M. Pd]]></text>
 			</staticText>
-			<textField pattern="EEEEE dd MMMMM yyyy">
-				<reportElement x="631" y="0" width="100" height="20" uuid="651fd415-33f1-4a6e-832b-f8b425d5c1a0"/>
-				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement x="631" y="31" width="84" height="20" uuid="c6dd2131-37f9-406b-9b0f-3d20b5f51255"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<reportElement x="401" y="20" width="132" height="20" uuid="9bae1295-5776-44c3-ae95-78145c514362"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
 				<text><![CDATA[Kepala Sekolah]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="642" y="103" width="73" height="20" uuid="197fd95b-a49d-4dbb-981a-c8bfd169ac53"/>
-				<textElement verticalAlignment="Middle"/>
-				<text><![CDATA[Mansur, M. Pd]]></text>
+				<reportElement x="401" y="0" width="37" height="20" uuid="f2bdb03b-0907-4ccd-b05c-a786601857a6"/>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<text><![CDATA[Bekasi,]]></text>
 			</staticText>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="442" y="0" width="100" height="20" uuid="0f2bcc51-9dae-4a51-9993-acf79597d674"/>
+				<textElement>
+					<font fontName="SansSerif" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
 		</band>
 	</columnFooter>
 	<pageFooter>
-		<band height="34" splitType="Stretch">
-			<textField>
-				<reportElement x="702" y="14" width="100" height="20" uuid="4ebc180d-24a4-45d5-a186-e96f8b635e5d"/>
+		<band height="54" splitType="Stretch">
+			<textField evaluationTime="Report">
+				<reportElement x="227" y="34" width="100" height="20" uuid="744b6b98-5d74-4123-bbbb-1dd51d0d9646"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>

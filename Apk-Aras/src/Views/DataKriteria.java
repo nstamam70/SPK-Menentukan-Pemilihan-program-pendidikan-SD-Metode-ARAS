@@ -77,12 +77,15 @@ public class DataKriteria extends javax.swing.JFrame {
             ResultSet rs = stat.executeQuery(sql);
             if (rs.next()) {
                 String kode = rs.getString(1);
+                k_kode.setEnabled(false);
                 if (kode == null) {
                     k_kode.setText("C001");
+                    
                 } else {
                     int no = Integer.parseInt(kode.substring(1)) + 1;
                     String kodeBaru = String.format("C%03d", no);
                     k_kode.setText(kodeBaru);
+                
                 }
             }
         } catch (Exception e) {
@@ -322,6 +325,7 @@ public class DataKriteria extends javax.swing.JFrame {
     private void k_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_kembaliActionPerformed
         // TODO add your handling code here:
         new Menu().setVisible(true);
+        k_simpan.setVisible(true);
         dispose();
     }//GEN-LAST:event_k_kembaliActionPerformed
 
@@ -331,6 +335,8 @@ public class DataKriteria extends javax.swing.JFrame {
         k_nama.setText(tablekriteria.getValueAt(baris, 1).toString());
         k_tipe.setSelectedItem(tablekriteria.getValueAt(baris, 2).toString());
         k_nilai.setText(tablekriteria.getValueAt(baris, 3).toString());
+        
+        k_simpan.setVisible(false);
     }//GEN-LAST:event_tablekriteriaMouseClicked
 
     private void k_simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_k_simpanActionPerformed
@@ -368,6 +374,7 @@ public class DataKriteria extends javax.swing.JFrame {
 
             clear();
             datatable();
+            k_simpan.setVisible(true);
             autoKodeKriteria();
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Data gagal diubah: " + e.getMessage());
@@ -393,6 +400,7 @@ public class DataKriteria extends javax.swing.JFrame {
 
                 clear();
                 datatable();
+                k_simpan.setVisible(true);
                 autoKodeKriteria();
             } catch (SQLException e) {
                 JOptionPane.showMessageDialog(this, "Data gagal dihapus: " + e.getMessage());

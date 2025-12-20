@@ -70,9 +70,10 @@ public class Nilai extends javax.swing.JFrame {
         tabmode.setRowCount(0);
         tablenilai.setModel(tabmode);
         String sql = "SELECT n.kode, a.nama_alternatif, k.nama_kriteria, n.nilai "
-                + "FROM nilai_alternatif n "
-                + "JOIN alternatif a ON n.id_alternatif = a.id_alternatif "
-                + "JOIN kriteria k ON n.id_kriteria = k.id_kriteria";
+        + "FROM nilai_alternatif n "
+        + "JOIN alternatif a ON n.id_alternatif = a.id_alternatif "
+        + "JOIN kriteria k ON n.id_kriteria = k.id_kriteria "
+        + "ORDER BY a.nama_alternatif ASC";
 
         try {
             java.sql.Statement stat = conn.createStatement();
@@ -145,6 +146,7 @@ public class Nilai extends javax.swing.JFrame {
 
             if (rs.next()) {
                 String kode = rs.getString(1);
+                dn_kode.setEnabled(false);
 
                 if (kode == null || kode.length() < 2) {
                     dn_kode.setText("N001");
@@ -159,7 +161,7 @@ public class Nilai extends javax.swing.JFrame {
         }
     }
 
-  private void cariNilai(String keyword) {
+    private void cariNilai(String keyword) {
         Object[] clcis = {"Kode", "Nama alternatif", "Nama Kriteria", "Nilai"};
         tabmode = new DefaultTableModel(null, clcis);
         tablenilai.setModel(tabmode);
@@ -405,6 +407,7 @@ public class Nilai extends javax.swing.JFrame {
     private void dn_kembaliActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dn_kembaliActionPerformed
         // TODO add your handling code here:
         new Menu().setVisible(true);
+        dn_simpan.setVisible(true);
         dispose();
     }//GEN-LAST:event_dn_kembaliActionPerformed
 
