@@ -133,8 +133,9 @@ public class DataAlternatif extends javax.swing.JFrame {
         ds_hapus = new javax.swing.JButton();
         ds_kembali = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setBackground(new java.awt.Color(204, 255, 204));
+        setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -164,7 +165,7 @@ public class DataAlternatif extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1050, 90));
 
-        jPanel2.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(1000, 475));
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));

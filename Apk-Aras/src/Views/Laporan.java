@@ -81,7 +81,7 @@ public class Laporan extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1070, 70));
 
-        jPanel2.setBackground(new java.awt.Color(0, 153, 153));
+        jPanel2.setBackground(new java.awt.Color(0, 153, 255));
 
         lp_datakriteria.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         lp_datakriteria.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Assets/docs_120dp_E3E3E3_FILL0_wght400_GRAD0_opsz48.png"))); // NOI18N
@@ -136,7 +136,7 @@ public class Laporan extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(lp_dataalternatif, javax.swing.GroupLayout.PREFERRED_SIZE, 368, Short.MAX_VALUE)
+                            .addComponent(lp_dataalternatif, javax.swing.GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
                             .addComponent(lp_nilai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

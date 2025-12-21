@@ -53,6 +53,7 @@ public class Menu extends javax.swing.JFrame {
             .addGap(0, 647, Short.MAX_VALUE)
         );
 
+        jMenuBar1.setBackground(new java.awt.Color(0, 153, 255));
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
 
         Data.setText("Data");
